@@ -5,7 +5,12 @@ import { AuthenticatedResponse } from '../../middlewares/authentication.js';
 
 type RequestWithAddress = Request<{ address: string }>;
 
-type CreateAccountRequest = Request<{}, {}, { alias: string }>;
+type CreateAccountRequest = Request<{}, {}, { alias?: string }>;
+type UpdateAccountRequest = Request<
+    {},
+    {},
+    { alias?: string; address?: string }
+>;
 
 export default class AccountsController {
     constructor(private readonly accountService: AccountsService) {}
@@ -24,9 +29,20 @@ export default class AccountsController {
         res: AuthenticatedResponse
     ) => {
         const userId = res.locals.userId;
-        const alias = aliasSchema.parse(req.body.alias);
-        const account = await this.accountService.createAccount(userId, alias);
-        res.json(account);
+        const alias = aliasSchema.parse(req.body?.alias);
+        await this.accountService.createAccount(userId, alias);
+        res.json({ message: 'Account created successfully' });
+    };
+
+    updateAccount: RequestHandler = async (
+        req: UpdateAccountRequest,
+        res: AuthenticatedResponse
+    ) => {
+        const userId = res.locals.userId;
+        const alias = aliasSchema.parse(req.body?.alias);
+        const address = addressSchema.parse(req.body?.address);
+        await this.accountService.updateAccount(userId, alias, address);
+        res.json({ message: 'Account updated successfully' });
     };
 
     getAccountBalance: RequestHandler = async (
@@ -39,7 +55,7 @@ export default class AccountsController {
             userId,
             address
         );
-        res.json(balance);
+        res.json({ balance });
     };
 
     getAccountHistory: RequestHandler = async (

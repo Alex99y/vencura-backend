@@ -1,6 +1,10 @@
 import jwt from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 
+import { createLogger } from './logger.js';
+
+const logger = createLogger();
+
 export class JwtService {
     private keyCache: string | undefined;
     private readonly client: jwksClient.JwksClient;
@@ -37,10 +41,18 @@ export class JwtService {
         if (this.keyCache) {
             return callback(null, this.keyCache);
         }
+        let calledSuccessfully;
         this.client.getSigningKey(header.kid, (err, key) => {
             if (err) {
-                return callback(err);
+                // FIXME Sometimes this callback is being called after a successful verification, we need to handle this better
+                logger.error('Error getting signing key:', err);
+                if (!calledSuccessfully) {
+                    return callback(err);
+                }
+
+                return;
             }
+            calledSuccessfully = true;
             // Convert the key to PEM format as required by jsonwebtoken
             const signingKey = key.getPublicKey();
             this.keyCache = signingKey;

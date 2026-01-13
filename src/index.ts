@@ -1,14 +1,31 @@
 import app from './server.js';
 import { createLogger } from './utils/logger.js';
 import { config } from './utils/config.js';
+import { closeConnection } from './services/db/mongo.js';
+import initModels from './services/db/models.js';
 
 const logger = createLogger();
 
-const server = app.listen(config.port, config.host, () => {
-    logger.info(`Server is running on ${config.host}:${config.port}`);
-});
+async function startServer() {
+    try {
+        await initModels();
+        logger.info('MongoDB connection initialized');
 
-const shutdown = () => {
+        const server = app.listen(config.port, config.host, () => {
+            logger.info(`Server is running on ${config.host}:${config.port}`);
+        });
+
+        return server;
+    } catch (error) {
+        logger.error('Failed to start server:', error);
+        process.exit(1);
+    }
+}
+
+const server = await startServer();
+
+const shutdown = async () => {
+    await closeConnection();
     server.close(() => {
         logger.info('Server is shutting down');
         process.exit(0);

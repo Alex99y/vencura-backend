@@ -21,6 +21,9 @@ export interface Config {
         apiKey: string;
         environmentId: string;
     };
+    mongodb: {
+        uri: string | undefined;
+    };
 }
 
 export const config: Config = {
@@ -71,6 +74,9 @@ export const config: Config = {
             .string()
             .default('')
             .parse(process.env.DYNAMIC_LABS_ENVIRONMENT_ID),
+    },
+    mongodb: {
+        uri: z.string().optional().parse(process.env.MONGODB_URI),
     },
 };
 
