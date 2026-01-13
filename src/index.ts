@@ -1,17 +1,23 @@
-import express from 'express'
+import app from "./server.js"
+import { createLogger } from "./utils/logger.js"
+import { config } from "./utils/config.js"
 
-const app = express()
+const logger = createLogger()
 
-app.get('/', (_req, res) => {
-  res.send('Hello Express!')
+const server = app.listen(config.port, config.host, () => {
+  logger.info(`Server is running on ${config.host}:${config.port}`)
 })
 
-app.get('/api/users/:id', (_req, res) => {
-  res.json({ id: _req.params.id })
-})
+const shutdown = () => {
+  server.close(() => {
+    logger.info("Server is shutting down")
+    process.exit(0)
+  })
+  setTimeout(() => {
+    logger.error("Server is forcefully shutting down")
+    process.exit(1)
+  }, 10000)
+}
 
-app.get('/api/posts/:postId/comments/:commentId', (_req, res) => {
-  res.json({ postId: _req.params.postId, commentId: _req.params.commentId })
-})
-
-export default app
+process.on("SIGINT", shutdown)
+process.on("SIGTERM", shutdown)
