@@ -22,7 +22,7 @@ const morganStream = {
     },
 };
 
-const app = express();
+const app: express.Express = express();
 
 app.use(helmet());
 

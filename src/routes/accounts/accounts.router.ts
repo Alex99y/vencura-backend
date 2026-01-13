@@ -12,7 +12,7 @@ const accountsRepository = new AccountsRepository(db);
 const accountsService = new AccountsService(accountsRepository);
 const accountsController = new AccountsController(accountsService);
 
-const router = express.Router();
+const router: express.Router = express.Router();
 
 router.get('/accounts', authenticate, accountsController.getAccounts);
 
