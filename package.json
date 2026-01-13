@@ -3,6 +3,7 @@
     "type": "module",
     "scripts": {
         "build": "tsc && tsup",
+        "build:check": "tsc --noEmit",
         "start:dev": "node --import=tsx --watch src/index.ts",
         "start:prod": "node dist/index.js",
         "check": "biome check --write",
