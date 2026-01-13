@@ -14,6 +14,7 @@
     },
     "dependencies": {
         "@asteasolutions/zod-to-openapi": "^8.4.0",
+        "@dynamic-labs-wallet/core": "^0.0.244",
         "@dynamic-labs-wallet/node-evm": "^0.0.244",
         "cors": "^2.8.5",
         "dotenv": "^17.2.3",
