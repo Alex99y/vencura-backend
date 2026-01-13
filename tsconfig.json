@@ -1,8 +1,13 @@
 {
     "compilerOptions": {
         "target": "ESNext",
+        "outDir": "./dist",
         "module": "NodeNext",
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "declaration": true,
+        "declarationMap": true,
     },
-    "exclude": ["node_modules"]
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 }

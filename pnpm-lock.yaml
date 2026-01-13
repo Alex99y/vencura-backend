@@ -12,8 +12,8 @@ importers:
         specifier: ^8.4.0
         version: 8.4.0(zod@4.0.5)
       '@dynamic-labs-wallet/node-evm':
-        specifier: ^0.0.241
-        version: 0.0.241(@zerodev/webauthn-key@5.5.0(viem@2.44.1(typescript@5.8.3)(zod@4.0.5)))(typescript@5.8.3)(viem@2.44.1(typescript@5.8.3)(zod@4.0.5))(zod@4.0.5)
+        specifier: ^0.0.244
+        version: 0.0.244(@zerodev/webauthn-key@5.5.0(viem@2.44.1(typescript@5.8.3)(zod@4.0.5)))(typescript@5.8.3)(viem@2.44.1(typescript@5.8.3)(zod@4.0.5))(zod@4.0.5)
       cors:
         specifier: ^2.8.5
         version: 2.8.5
@@ -130,8 +130,8 @@ packages:
   '@dynamic-labs-wallet/core@0.0.211':
     resolution: {integrity: sha512-PPLjOu55O4G204phWfPmpZNn4p+vcinZ8XvBvBcRl+uHhYxYIFg/Ma4C96ZrNB08iT5uxXxzNAWAg46ytO/GGA==}
 
-  '@dynamic-labs-wallet/core@0.0.241':
-    resolution: {integrity: sha512-0CWt9Fmra4ecEHySeVk+lo/SqE64c3GWzWKBowsx3d6mhJsS7MSwsN47ZlyzU40zlDY+ZCJVRohomTf0QOT5HA==}
+  '@dynamic-labs-wallet/core@0.0.244':
+    resolution: {integrity: sha512-/en4E5ZOjiBQj6BRrt3Df8BNDb6FN49ikPPFlewtzc/vIpH+EePPuR6ndZGaMwOVIanh2YcdbeadeuikCMI/6A==}
 
   '@dynamic-labs-wallet/forward-mpc-client@0.1.3':
     resolution: {integrity: sha512-riZesfU41fMvetaxJ3bO48/9P8ikRPgoVJgWh8m8i0oRyYN7uUz+Iesp+52U12DCtcvSTXljxrKtrV3yqNAYRw==}
@@ -145,13 +145,13 @@ packages:
   '@dynamic-labs-wallet/forward-mpc-shared@0.2.0':
     resolution: {integrity: sha512-2I8NoCBVT9/09o4+M78S2wyY9jVXAb6RKt5Bnh1fhvikuB11NBeswtfZLns3wAFQxayApe31Jhamd4D2GR+mtw==}
 
-  '@dynamic-labs-wallet/node-evm@0.0.241':
-    resolution: {integrity: sha512-YIOkFcFB2Z8ju0NI3lbbISXSV/X66mAMGqYkTKNDLEhEhbV0af7mqMAArIEyZnpu6vtlzw9mMN5tqg8aFSE3ig==}
+  '@dynamic-labs-wallet/node-evm@0.0.244':
+    resolution: {integrity: sha512-ZEIkowhUX9pQK3nkQARvLT2y1wgSR0GpQuPN03NwNyygAgG8+enNCIz81smnBYQGKOP/1bdGydENg1eGmSPk2A==}
     peerDependencies:
       viem: 2.38.2
 
-  '@dynamic-labs-wallet/node@0.0.241':
-    resolution: {integrity: sha512-8hAR8Bp5FhLS70ok5Yil2oblO6Zzv3465aFmeX0B9fdj43QePg4Kj//Pg3b83JpqINRfhfC1HqjH7ilCZv4UwA==}
+  '@dynamic-labs-wallet/node@0.0.244':
+    resolution: {integrity: sha512-IrLPMWaktnY2FQt+8TSd0l8wq70h9jbuMu0RUnDJs/ohWVAyhPzOhvEUPMu2zTlyPUqB2Y1tGIS8kCmC57/YRg==}
 
   '@dynamic-labs/assert-package-version@4.52.5':
     resolution: {integrity: sha512-uzUyAVZCG1DZ9FEekB+ubVNwIaoRaEUBF1/1GGqESkFuip4juIL5NpD/amOVJ8r2f3nv5p4LBgtxMqvV4m1StQ==}
@@ -2193,7 +2193,7 @@ snapshots:
       - debug
       - utf-8-validate
 
-  '@dynamic-labs-wallet/core@0.0.241':
+  '@dynamic-labs-wallet/core@0.0.244':
     dependencies:
       '@dynamic-labs-wallet/forward-mpc-client': 0.2.0
       '@dynamic-labs/logger': 4.52.5
@@ -2262,13 +2262,13 @@ snapshots:
       - debug
       - utf-8-validate
 
-  '@dynamic-labs-wallet/node-evm@0.0.241(@zerodev/webauthn-key@5.5.0(viem@2.44.1(typescript@5.8.3)(zod@4.0.5)))(typescript@5.8.3)(viem@2.44.1(typescript@5.8.3)(zod@4.0.5))(zod@4.0.5)':
+  '@dynamic-labs-wallet/node-evm@0.0.244(@zerodev/webauthn-key@5.5.0(viem@2.44.1(typescript@5.8.3)(zod@4.0.5)))(typescript@5.8.3)(viem@2.44.1(typescript@5.8.3)(zod@4.0.5))(zod@4.0.5)':
     dependencies:
       '@dynamic-labs-sdk/client': 0.1.2
       '@dynamic-labs-sdk/evm': 0.1.2(typescript@5.8.3)(viem@2.44.1(typescript@5.8.3)(zod@4.0.5))(zod@4.0.5)
       '@dynamic-labs-sdk/zerodev': 0.1.2(@zerodev/webauthn-key@5.5.0(viem@2.44.1(typescript@5.8.3)(zod@4.0.5)))(typescript@5.8.3)(viem@2.44.1(typescript@5.8.3)(zod@4.0.5))(zod@4.0.5)
-      '@dynamic-labs-wallet/core': 0.0.241
-      '@dynamic-labs-wallet/node': 0.0.241
+      '@dynamic-labs-wallet/core': 0.0.244
+      '@dynamic-labs-wallet/node': 0.0.244
       '@dynamic-labs/logger': 4.52.5
       '@dynamic-labs/sdk-api-core': 0.0.801
       '@zerodev/ecdsa-validator': 5.4.9(@zerodev/sdk@5.4.36(viem@2.44.1(typescript@5.8.3)(zod@4.0.5)))(viem@2.44.1(typescript@5.8.3)(zod@4.0.5))
@@ -2302,9 +2302,9 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@dynamic-labs-wallet/node@0.0.241':
+  '@dynamic-labs-wallet/node@0.0.244':
     dependencies:
-      '@dynamic-labs-wallet/core': 0.0.241
+      '@dynamic-labs-wallet/core': 0.0.244
       '@dynamic-labs-wallet/forward-mpc-client': 0.2.0
       '@dynamic-labs/logger': 4.52.5
       '@dynamic-labs/sdk-api-core': 0.0.801
@@ -3711,7 +3711,7 @@ snapshots:
       '@noble/hashes': 1.8.0
       '@scure/bip32': 1.7.0
       '@scure/bip39': 1.6.0
-      abitype: 1.0.8(typescript@5.8.3)(zod@4.0.5)
+      abitype: 1.2.3(typescript@5.8.3)(zod@4.0.5)
       eventemitter3: 5.0.1
     optionalDependencies:
       typescript: 5.8.3

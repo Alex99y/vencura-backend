@@ -69,11 +69,11 @@ export const config: Config = {
             .parse(process.env.LOG_FORMAT),
     },
     dynamicLabs: {
-        apiKey: z.string().default('').parse(process.env.DYNAMIC_LABS_API_KEY),
+        apiKey: z.string().default('').parse(process.env.DYNAMIC_AUTH_TOKEN),
         environmentId: z
             .string()
             .default('')
-            .parse(process.env.DYNAMIC_LABS_ENVIRONMENT_ID),
+            .parse(process.env.DYNAMIC_ENVIRONMENT_ID),
     },
     mongodb: {
         uri: z.string().optional().parse(process.env.MONGODB_URI),

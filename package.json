@@ -2,7 +2,7 @@
     "name": "express",
     "type": "module",
     "scripts": {
-        "build": "tsc && tsup",
+        "build": "tsc",
         "build:check": "tsc --noEmit",
         "start:dev": "node --import=tsx --watch src/index.ts",
         "start:prod": "node dist/index.js",
@@ -14,7 +14,7 @@
     },
     "dependencies": {
         "@asteasolutions/zod-to-openapi": "^8.4.0",
-        "@dynamic-labs-wallet/node-evm": "^0.0.241",
+        "@dynamic-labs-wallet/node-evm": "^0.0.244",
         "cors": "^2.8.5",
         "dotenv": "^17.2.3",
         "express": "5.1.0",
