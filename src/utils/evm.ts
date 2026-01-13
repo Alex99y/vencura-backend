@@ -1,5 +1,5 @@
-import * as viem from "viem"
+import * as viem from 'viem';
 
 export const isValidEvmAddress = (address: string) => {
-    return viem.isAddress(address)
-}
+    return viem.isAddress(address);
+};
