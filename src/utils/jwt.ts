@@ -36,27 +36,19 @@ export class JwtService {
         });
     }
 
-    private getKey = (header: any, callback: any) => {
+    private getKey = async (header: jwt.JwtHeader, callback: jwt.SigningKeyCallback) => {
         // Avoid calling the JWKS endpoint if the key is already cached
+        // TODO: Add a timeout to the cache
         if (this.keyCache) {
             return callback(null, this.keyCache);
         }
-        let calledSuccessfully;
-        this.client.getSigningKey(header.kid, (err, key) => {
-            if (err) {
-                // FIXME Sometimes this callback is being called after a successful verification, we need to handle this better
-                logger.error('Error getting signing key:', err);
-                if (!calledSuccessfully) {
-                    return callback(err);
-                }
+        try {
+            const signingKey = await this.client.getSigningKey(header.kid);
+            this.keyCache = signingKey.getPublicKey();
+            callback(null, this.keyCache);
+        } catch (err) {
+            return callback(err);
+        }
 
-                return;
-            }
-            calledSuccessfully = true;
-            // Convert the key to PEM format as required by jsonwebtoken
-            const signingKey = key.getPublicKey();
-            this.keyCache = signingKey;
-            callback(null, signingKey);
-        });
     };
 }

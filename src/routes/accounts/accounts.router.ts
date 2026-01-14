@@ -36,7 +36,7 @@ router.post(
 );
 
 router.put(
-    '/account',
+    '/account/:address',
     contentTypeValidation,
     authenticate,
     accountsController.updateAccount

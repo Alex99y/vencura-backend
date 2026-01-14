@@ -1,6 +1,7 @@
 import { DynamicEvmWalletClient } from '@dynamic-labs-wallet/node-evm';
 import { ThresholdSignatureScheme } from '@dynamic-labs-wallet/core';
 import { TransactionSerializable } from 'viem';
+import { config } from '../../utils/config.js';
 
 export default class DynamicApiService {
     constructor(private readonly client: DynamicEvmWalletClient) {}
@@ -73,8 +74,9 @@ export default class DynamicApiService {
             }
             const client = new DynamicEvmWalletClient({
                 environmentId,
-                // debug: true,
-                enableMPCAccelerator: true,
+                debug: config.env === 'development',
+                // Receiving errors when using the MPC accelerator
+                enableMPCAccelerator: false,
             });
 
             await client.authenticateApiToken(apiKey);

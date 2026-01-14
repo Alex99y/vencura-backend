@@ -7,7 +7,7 @@ type RequestWithAddress = Request<{ address: string }>;
 
 type CreateAccountRequest = Request<{}, {}, { alias?: string }>;
 type UpdateAccountRequest = Request<
-    {},
+    { address: string },
     {},
     { alias?: string; address?: string }
 >;
@@ -40,7 +40,7 @@ export default class AccountsController {
     ) => {
         const userId = res.locals.userId;
         const alias = aliasSchema.parse(req.body?.alias);
-        const address = addressSchema.parse(req.body?.address);
+        const address = addressSchema.parse(req.params?.address);
         await this.accountService.updateAccount(userId, alias, address);
         res.json({ message: 'Account updated successfully' });
     };
