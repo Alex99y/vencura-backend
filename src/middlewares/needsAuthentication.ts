@@ -6,7 +6,7 @@ const dynamicAuthService = new DynamicAuthService();
 
 export type AuthenticatedResponse<T = any> = Response<T, { userId: string }>;
 
-export const authenticate: RequestHandler = async (
+export const needsAuthentication: RequestHandler = async (
     req: Request,
     res: AuthenticatedResponse,
     next: NextFunction

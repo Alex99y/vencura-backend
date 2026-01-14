@@ -1,8 +1,8 @@
 import express from 'express';
 
 // Middlewares
-import { authenticate } from '../../middlewares/authentication.js';
-import { contentTypeValidation } from '../../middlewares/contentType.js';
+import { needsAuthentication } from '../../middlewares/needsAuthentication.js';
+import { validateContentType } from '../../middlewares/validateContentType.js';
 
 import OperationsController from './operations.controller.js';
 import OperationsService from './operations.service.js';
@@ -27,14 +27,14 @@ const router: express.Router = express.Router();
 
 router.post(
     '/sign-message',
-    contentTypeValidation,
-    authenticate,
+    validateContentType,
+    needsAuthentication,
     operationsController.signMessage
 );
 router.post(
     '/sign-transaction',
-    contentTypeValidation,
-    authenticate,
+    validateContentType,
+    needsAuthentication,
     operationsController.signTransaction
 );
 

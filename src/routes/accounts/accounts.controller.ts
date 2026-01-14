@@ -1,7 +1,7 @@
 import { Request, RequestHandler, Response } from 'express';
 import AccountsService from './accounts.service.js';
 import { addressSchema, aliasSchema } from './accounts.model.js';
-import { AuthenticatedResponse } from '../../middlewares/authentication.js';
+import { AuthenticatedResponse } from '../../middlewares/needsAuthentication.js';
 
 type RequestWithAddress = Request<{ address: string }>;
 

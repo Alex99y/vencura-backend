@@ -6,8 +6,8 @@ import OperationsRepository from '../operations/operations.repository.js';
 import DynamicApiService from '../../services/dynamic/api.js';
 
 // Middlewares
-import { authenticate } from '../../middlewares/authentication.js';
-import { contentTypeValidation } from '../../middlewares/contentType.js';
+import { needsAuthentication } from '../../middlewares/needsAuthentication.js';
+import { validateContentType } from '../../middlewares/validateContentType.js';
 
 import { config } from '../../utils/config.js';
 import { getDb } from '../../services/db/mongo.js';
@@ -29,31 +29,31 @@ const accountsController = new AccountsController(accountsService);
 
 const router: express.Router = express.Router();
 
-router.get('/accounts', authenticate, accountsController.getAccounts);
+router.get('/accounts', needsAuthentication, accountsController.getAccounts);
 
 router.post(
     '/account',
-    contentTypeValidation,
-    authenticate,
+    validateContentType,
+    needsAuthentication,
     accountsController.createAccount
 );
 
 router.put(
     '/account/:address',
-    contentTypeValidation,
-    authenticate,
+    validateContentType,
+    needsAuthentication,
     accountsController.updateAccount
 );
 
 router.get(
     '/account/:address/balance',
-    authenticate,
+    needsAuthentication,
     accountsController.getAccountBalance
 );
 
 router.get(
     '/account/:address/history',
-    authenticate,
+    needsAuthentication,
     accountsController.getAccountHistory
 );
 
