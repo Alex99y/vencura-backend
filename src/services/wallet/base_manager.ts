@@ -4,6 +4,7 @@ export type WalletAccount = {
     address: string;
     createdAt: number;
     walletId: string;
+    encryptedPrivateKey?: string;
 };
 
 export default abstract class BaseWalletManager {

@@ -27,7 +27,8 @@ export class AccountsRepository {
         userId: string,
         alias: string,
         address: string,
-        walletId: string
+        walletId: string,
+        encryptedPrivateKey?: string
     ) {
         const currentDate = Date.now();
         const account = {
@@ -37,6 +38,7 @@ export class AccountsRepository {
             walletId,
             createdAt: currentDate,
             updatedAt: currentDate,
+            encryptedPrivateKey,
         };
 
         // Use a transaction to make the count check and insert atomic to avoid race conditions

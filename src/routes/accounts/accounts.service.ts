@@ -41,12 +41,25 @@ export default class AccountsService {
             userId,
             alias,
             account.address,
-            account.walletId
+            account.walletId,
+            account.encryptedPrivateKey
         );
     };
 
     updateAccount = async (userId: string, alias: string, address: string) => {
         await this.accountsRepository.updateAccount(userId, alias, address);
+    };
+
+    updateAccountPassword = async (
+        address: string,
+        existingPassword: string,
+        newPassword: string
+    ) => {
+        await this.walletManager.updateAccountPassword(
+            address,
+            existingPassword,
+            newPassword
+        );
     };
 
     getAccountBalance = async (userId: string, address: string) => {

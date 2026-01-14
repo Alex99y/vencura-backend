@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import DynamicAuthService from '../services/dynamic/auth.js';
 import { ClientError } from '../utils/errors.js';
+import { config } from '../utils/config.js';
 
 const dynamicAuthService = new DynamicAuthService();
 
@@ -20,6 +21,13 @@ export const needsAuthentication = async (
     const decodedToken = dynamicAuthService.decodeToken(token);
     if (!decodedToken) {
         throw new ClientError('Unauthorized, JWT is empty or null', 401);
+    }
+
+    if (decodedToken.environment_id !== config.dynamicLabs.environmentId) {
+        throw new ClientError(
+            'Unauthorized, JWT token is not valid for this environment',
+            401
+        );
     }
 
     if (decodedToken.exp && decodedToken.exp < Date.now() / 1000) {

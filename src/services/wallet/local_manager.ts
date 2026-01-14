@@ -22,18 +22,12 @@ export default class LocalWalletManager extends BaseWalletManager {
         );
         const walletId = crypto.randomUUID();
         const currentDate = Date.now();
-        await this.db.collection('accounts').insertOne({
-            userId,
-            address,
-            privateKey: encryptedPrivateKey,
-            walletId,
-            createdAt: currentDate,
-            updatedAt: currentDate,
-        });
+
         return {
             address,
             createdAt: currentDate,
             walletId,
+            encryptedPrivateKey,
         };
     };
 

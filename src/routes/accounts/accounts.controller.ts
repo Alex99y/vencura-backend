@@ -17,7 +17,7 @@ type CreateAccountRequest = Request<
 type UpdateAccountRequest = Request<
     { address: string },
     {},
-    { alias?: string; address?: string }
+    { alias?: string; existingPassword?: string; newPassword?: string }
 >;
 
 export default class AccountsController {
@@ -45,9 +45,22 @@ export default class AccountsController {
         res: AuthenticatedResponse
     ) => {
         const userId = res.locals.userId;
-        const alias = aliasSchema.parse(req.body?.alias);
+        const alias = aliasSchema.optional().parse(req.body?.alias);
         const address = addressSchema.parse(req.params?.address);
-        await this.accountService.updateAccount(userId, alias, address);
+        const existingPassword = passwordSchema
+            .optional()
+            .parse(req.body?.existingPassword);
+        const newPassword = passwordSchema
+            .optional()
+            .parse(req.body?.newPassword);
+        if (alias)
+            await this.accountService.updateAccount(userId, alias, address);
+        if (existingPassword && newPassword)
+            await this.accountService.updateAccountPassword(
+                address,
+                existingPassword,
+                newPassword
+            );
         res.json({ message: 'Account updated successfully' });
     };
 
