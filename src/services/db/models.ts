@@ -1,4 +1,4 @@
-import type { ObjectId } from 'mongodb';
+import type { Db, ObjectId } from 'mongodb';
 import { getDb } from './mongo.js';
 
 export interface StoredAccount {
@@ -26,7 +26,7 @@ export interface StoredOperation {
 const DEFAULT_DB_NAME = 'vencura_db';
 
 // TODO: A future task could be improve this code to manage migrations.
-export default async function initModels() {
+export default async function initModels(): Promise<Db> {
     const db = await getDb(DEFAULT_DB_NAME);
     await db.createCollection('accounts');
     const accounts = db.collection('accounts');
@@ -37,4 +37,6 @@ export default async function initModels() {
         { _id: 1, userId: 1, address: 1, createdAt: 1 },
         { unique: true }
     );
+
+    return db;
 }

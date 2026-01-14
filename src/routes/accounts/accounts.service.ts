@@ -1,4 +1,4 @@
-import DynamicApiService from '../../services/dynamic/api.js';
+import BaseWalletManager from '../../services/wallet/base_manager.js';
 import { ClientError } from '../../utils/errors.js';
 import OperationsRepository from '../operations/operations.repository.js';
 import {
@@ -10,7 +10,7 @@ export default class AccountsService {
     constructor(
         private readonly accountsRepository: AccountsRepository,
         private readonly operationsRepository: OperationsRepository,
-        private readonly dynamicApiService: DynamicApiService
+        private readonly walletManager: BaseWalletManager
     ) {}
 
     getAccounts = async (userId: string) => {
@@ -23,7 +23,7 @@ export default class AccountsService {
         }));
     };
 
-    createAccount = async (userId: string, alias: string) => {
+    createAccount = async (userId: string, alias: string, password: string) => {
         const accountsCount =
             await this.accountsRepository.getAccountsCount(userId);
         if (accountsCount >= MAX_ACCOUNTS_PER_USER) {
@@ -32,12 +32,15 @@ export default class AccountsService {
                 400
             );
         }
-        const account = await this.dynamicApiService.createAccount();
+        const account = await this.walletManager.createAccount(
+            userId,
+            password
+        );
 
         await this.accountsRepository.createAccount(
             userId,
             alias,
-            account.accountAddress,
+            account.address,
             account.walletId
         );
     };

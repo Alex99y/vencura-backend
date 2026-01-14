@@ -1,4 +1,4 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import DynamicAuthService from '../services/dynamic/auth.js';
 import { ClientError } from '../utils/errors.js';
 
@@ -6,7 +6,7 @@ const dynamicAuthService = new DynamicAuthService();
 
 export type AuthenticatedResponse<T = any> = Response<T, { userId: string }>;
 
-export const needsAuthentication: RequestHandler = async (
+export const needsAuthentication = async (
     req: Request,
     res: AuthenticatedResponse,
     next: NextFunction

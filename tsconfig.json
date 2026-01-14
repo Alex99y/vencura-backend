@@ -5,7 +5,8 @@
         "module": "NodeNext",
         "skipLibCheck": true,
         "declaration": true,
-        "declarationMap": true
+        "declarationMap": true,
+        "strict": true
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]

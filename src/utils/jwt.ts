@@ -1,10 +1,5 @@
 import jwt from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
-
-import { createLogger } from './logger.js';
-
-const logger = createLogger();
-
 export class JwtService {
     private keyCache: string | undefined;
     private readonly client: jwksClient.JwksClient;
@@ -49,7 +44,7 @@ export class JwtService {
             const signingKey = await this.client.getSigningKey(header.kid);
             this.keyCache = signingKey.getPublicKey();
             callback(null, this.keyCache);
-        } catch (err) {
+        } catch (err: any) {
             return callback(err);
         }
     };

@@ -18,7 +18,7 @@ import { errorHandler } from './middlewares/errorHandler.js';
 const logger = createLogger();
 
 const morganStream = {
-    write: (message) => {
+    write: (message: string) => {
         logger.info(message.trim()); // Use logger.info inside the write function
     },
 };

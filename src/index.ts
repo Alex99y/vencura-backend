@@ -1,23 +1,18 @@
-import app from './server.js';
 import { createLogger } from './utils/logger.js';
 import { config } from './utils/config.js';
 import { closeConnection } from './services/db/mongo.js';
 import initModels from './services/db/models.js';
-import DynamicApiService from './services/dynamic/api.js';
+import { getWalletManager } from './services/wallet/index.js';
 
 const logger = createLogger();
 
 async function startServer() {
     try {
-        await initModels();
-        logger.info('MongoDB connection initialized');
-
-        await DynamicApiService.initialize(
-            config.dynamicLabs.environmentId,
-            config.dynamicLabs.apiKey
-        );
-        logger.info('Dynamic API connection initialized');
-
+        logger.info('Initializing MongoDB connection...');
+        const db = await initModels();
+        logger.info('Initializing Wallet manager...');
+        await getWalletManager(db, config);
+        const { default: app } = await import('./server.js');
         const server = app.listen(config.port, config.host, () => {
             logger.info(`Server is running on ${config.host}:${config.port}`);
         });

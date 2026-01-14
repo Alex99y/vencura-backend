@@ -6,20 +6,17 @@ import { validateContentType } from '../../middlewares/validateContentType.js';
 
 import OperationsController from './operations.controller.js';
 import OperationsService from './operations.service.js';
-import DynamicApiService from '../../services/dynamic/api.js';
 import OperationsRepository from './operations.repository.js';
 import { getDb } from '../../services/db/mongo.js';
 import { config } from '../../utils/config.js';
+import { getWalletManager } from '../../services/wallet/index.js';
 
 const db = await getDb();
-const dynamicApiService = await DynamicApiService.initialize(
-    config.dynamicLabs.environmentId,
-    config.dynamicLabs.apiKey
-);
+const walletManager = await getWalletManager(db, config);
 const operationsRepository = new OperationsRepository(db);
 const operationsService = new OperationsService(
     operationsRepository,
-    dynamicApiService
+    walletManager
 );
 const operationsController = new OperationsController(operationsService);
 

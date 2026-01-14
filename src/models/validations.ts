@@ -25,3 +25,5 @@ export const signTransactionSchema = z.object({
         .transform((t) => t as `0x${string}`),
     accountAddress: addressSchema,
 });
+
+export const passwordSchema = z.string().min(8).max(64);

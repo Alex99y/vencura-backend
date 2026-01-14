@@ -1,11 +1,19 @@
-import { Request, RequestHandler, Response } from 'express';
+import { Request } from 'express';
 import AccountsService from './accounts.service.js';
-import { addressSchema, aliasSchema } from '../../models/index.js';
+import {
+    addressSchema,
+    aliasSchema,
+    passwordSchema,
+} from '../../models/index.js';
 import { AuthenticatedResponse } from '../../middlewares/needsAuthentication.js';
 
 type RequestWithAddress = Request<{ address: string }>;
 
-type CreateAccountRequest = Request<{}, {}, { alias?: string }>;
+type CreateAccountRequest = Request<
+    {},
+    {},
+    { alias?: string; password?: string }
+>;
 type UpdateAccountRequest = Request<
     { address: string },
     {},
@@ -15,26 +23,24 @@ type UpdateAccountRequest = Request<
 export default class AccountsController {
     constructor(private readonly accountService: AccountsService) {}
 
-    getAccounts: RequestHandler = async (
-        req: Request,
-        res: AuthenticatedResponse
-    ) => {
+    getAccounts = async (req: Request, res: AuthenticatedResponse) => {
         const userId = res.locals.userId;
         const accounts = await this.accountService.getAccounts(userId);
         res.json(accounts);
     };
 
-    createAccount: RequestHandler = async (
+    createAccount = async (
         req: CreateAccountRequest,
         res: AuthenticatedResponse
     ) => {
         const userId = res.locals.userId;
         const alias = aliasSchema.parse(req.body?.alias);
-        await this.accountService.createAccount(userId, alias);
+        const password = passwordSchema.parse(req.body?.password);
+        await this.accountService.createAccount(userId, alias, password);
         res.json({ message: 'Account created successfully' });
     };
 
-    updateAccount: RequestHandler = async (
+    updateAccount = async (
         req: UpdateAccountRequest,
         res: AuthenticatedResponse
     ) => {
@@ -45,7 +51,7 @@ export default class AccountsController {
         res.json({ message: 'Account updated successfully' });
     };
 
-    getAccountBalance: RequestHandler = async (
+    getAccountBalance = async (
         req: RequestWithAddress,
         res: AuthenticatedResponse
     ) => {
@@ -58,7 +64,7 @@ export default class AccountsController {
         res.json({ balance });
     };
 
-    getAccountHistory: RequestHandler = async (
+    getAccountHistory = async (
         req: RequestWithAddress,
         res: AuthenticatedResponse
     ) => {

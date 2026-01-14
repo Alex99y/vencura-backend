@@ -1,11 +1,11 @@
-import DynamicApiService from '../../services/dynamic/api.js';
+import BaseWalletManager from '../../services/wallet/base_manager.js';
 import OperationsRepository from './operations.repository.js';
 import { toTransactionSerializable } from '../../utils/evm.js';
 
 export default class OperationsService {
     constructor(
         private readonly operationsRepository: OperationsRepository,
-        private readonly dynamicApiService: DynamicApiService
+        private readonly walletManager: BaseWalletManager
     ) {}
 
     signMessage = async (
@@ -13,7 +13,7 @@ export default class OperationsService {
         message: string,
         accountAddress: string
     ) => {
-        const signature = await this.dynamicApiService.signMessage(
+        const signature = await this.walletManager.signMessage(
             accountAddress,
             message
         );
@@ -32,7 +32,7 @@ export default class OperationsService {
         accountAddress: string
     ) => {
         const transactionSerializable = toTransactionSerializable(transaction);
-        const signature = await this.dynamicApiService.signTransaction(
+        const signature = await this.walletManager.signTransaction(
             accountAddress,
             transactionSerializable
         );
