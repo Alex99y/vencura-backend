@@ -17,7 +17,8 @@ interface StoredOperationResult {
         | 'sign_message'
         | 'sign_transaction'
         | 'create_account'
-        | 'update_account';
+        | 'update_account'
+        | 'update_account_password';
     description: string;
 }
 

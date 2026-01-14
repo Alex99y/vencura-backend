@@ -44,13 +44,26 @@ export default class AccountsService {
             account.walletId,
             account.encryptedPrivateKey
         );
+        await this.operationsRepository.storeOperation({
+            userId,
+            address: account.address,
+            type: 'create_account',
+            description: `Created account ${account.address} with alias ${alias}`,
+        });
     };
 
     updateAccount = async (userId: string, alias: string, address: string) => {
         await this.accountsRepository.updateAccount(userId, alias, address);
+        await this.operationsRepository.storeOperation({
+            userId,
+            address,
+            type: 'update_account',
+            description: `Updated account alias to ${alias}`,
+        });
     };
 
     updateAccountPassword = async (
+        userId: string,
         address: string,
         existingPassword: string,
         newPassword: string
@@ -60,6 +73,12 @@ export default class AccountsService {
             existingPassword,
             newPassword
         );
+        await this.operationsRepository.storeOperation({
+            userId,
+            address,
+            type: 'update_account',
+            description: `Updated account password`,
+        });
     };
 
     getAccountBalance = async (userId: string, address: string) => {

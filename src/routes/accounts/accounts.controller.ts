@@ -57,6 +57,7 @@ export default class AccountsController {
             await this.accountService.updateAccount(userId, alias, address);
         if (existingPassword && newPassword)
             await this.accountService.updateAccountPassword(
+                userId,
                 address,
                 existingPassword,
                 newPassword
