@@ -3,7 +3,7 @@ import OperationsService from './operations.service.js';
 import {
     signMessageSchema,
     signTransactionSchema,
-} from './operations.model.js';
+} from '../../models/index.js';
 import { AuthenticatedResponse } from '../../middlewares/needsAuthentication.js';
 
 export default class OperationsController {
