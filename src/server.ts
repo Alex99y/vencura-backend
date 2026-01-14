@@ -10,6 +10,7 @@ import { createLogger } from './utils/logger.js';
 
 // Routes
 import accountsRouter from './routes/accounts/accounts.router.js';
+import operationsRouter from './routes/operations/operations.router.js';
 
 // Middlewares
 import { errorHandler } from './middlewares/errorHandler.js';
@@ -39,7 +40,7 @@ app.use(morgan('dev', { stream: morganStream }));
 
 app.use(express.json());
 
-app.use('/api/v1', [accountsRouter]);
+app.use('/api/v1', [accountsRouter, operationsRouter]);
 
 app.use(errorHandler);
 

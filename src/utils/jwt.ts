@@ -36,7 +36,10 @@ export class JwtService {
         });
     }
 
-    private getKey = async (header: jwt.JwtHeader, callback: jwt.SigningKeyCallback) => {
+    private getKey = async (
+        header: jwt.JwtHeader,
+        callback: jwt.SigningKeyCallback
+    ) => {
         // Avoid calling the JWKS endpoint if the key is already cached
         // TODO: Add a timeout to the cache
         if (this.keyCache) {
@@ -49,6 +52,5 @@ export class JwtService {
         } catch (err) {
             return callback(err);
         }
-
     };
 }

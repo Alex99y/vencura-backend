@@ -21,12 +21,12 @@ export const authenticate: RequestHandler = async (
     if (!decodedToken) {
         throw new ClientError('Unauthorized, JWT is empty or null', 401);
     }
-    
+
     if (decodedToken.exp && decodedToken.exp < Date.now() / 1000) {
         throw new ClientError('Unauthorized, JWT token has expired', 401);
     }
-    
-    if (!await dynamicAuthService.validateAuthentication(token)) {
+
+    if (!(await dynamicAuthService.validateAuthentication(token))) {
         throw new ClientError('Unauthorized, invalid JWT token', 401);
     }
     res.locals.userId = decodedToken.sub;

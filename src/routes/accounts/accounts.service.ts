@@ -1,5 +1,6 @@
 import DynamicApiService from '../../services/dynamic/api.js';
 import { ClientError } from '../../utils/errors.js';
+import OperationsRepository from '../operations/operations.repository.js';
 import {
     AccountsRepository,
     MAX_ACCOUNTS_PER_USER,
@@ -8,6 +9,7 @@ import {
 export default class AccountsService {
     constructor(
         private readonly accountsRepository: AccountsRepository,
+        private readonly operationsRepository: OperationsRepository,
         private readonly dynamicApiService: DynamicApiService
     ) {}
 
@@ -49,6 +51,14 @@ export default class AccountsService {
     };
 
     getAccountHistory = async (userId: string, address: string) => {
-        return [address];
+        const history = await this.operationsRepository.getOperations(
+            userId,
+            address
+        );
+        return history.map((operation) => ({
+            createdAt: new Date(operation.createdAt).toISOString(),
+            type: operation.type,
+            description: operation.description,
+        }));
     };
 }
