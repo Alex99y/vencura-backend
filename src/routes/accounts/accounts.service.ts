@@ -1,7 +1,15 @@
-import { AccountsRepository } from './accounts.repository.js';
+import DynamicApiService from '../../services/dynamic/api.js';
+import { ClientError } from '../../utils/errors.js';
+import {
+    AccountsRepository,
+    MAX_ACCOUNTS_PER_USER,
+} from './accounts.repository.js';
 
 export default class AccountsService {
-    constructor(private readonly accountsRepository: AccountsRepository) {}
+    constructor(
+        private readonly accountsRepository: AccountsRepository,
+        private readonly dynamicApiService: DynamicApiService
+    ) {}
 
     getAccounts = async (userId: string) => {
         const accounts = await this.accountsRepository.getAccounts(userId);
@@ -14,10 +22,21 @@ export default class AccountsService {
     };
 
     createAccount = async (userId: string, alias: string) => {
+        const accountsCount =
+            await this.accountsRepository.getAccountsCount(userId);
+        if (accountsCount >= MAX_ACCOUNTS_PER_USER) {
+            throw new ClientError(
+                `Maximum number of accounts per user (${MAX_ACCOUNTS_PER_USER}) reached`,
+                400
+            );
+        }
+        const account = await this.dynamicApiService.createAccount();
+
         await this.accountsRepository.createAccount(
             userId,
             alias,
-            '0x1234567890123456789012345678901234567890'
+            account.accountAddress,
+            account.walletId
         );
     };
 

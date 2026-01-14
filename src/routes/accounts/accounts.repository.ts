@@ -2,7 +2,7 @@ import { Db } from 'mongodb';
 import { StoredAccount } from '../../services/db/models.js';
 import { ClientError } from '../../utils/errors.js';
 
-const MAX_ACCOUNTS_PER_USER = 10;
+export const MAX_ACCOUNTS_PER_USER = 10;
 export class AccountsRepository {
     constructor(private readonly db: Db) {}
 
@@ -23,12 +23,18 @@ export class AccountsRepository {
             );
     }
 
-    async createAccount(userId: string, alias: string, address: string) {
+    async createAccount(
+        userId: string,
+        alias: string,
+        address: string,
+        walletId: string
+    ) {
         const currentDate = Date.now();
         const account = {
             userId,
             alias,
             address,
+            walletId,
             createdAt: currentDate,
             updatedAt: currentDate,
         };
@@ -53,5 +59,9 @@ export class AccountsRepository {
         } finally {
             await session.endSession();
         }
+    }
+
+    async getAccountsCount(userId: string): Promise<number> {
+        return this.db.collection('accounts').countDocuments({ userId });
     }
 }
