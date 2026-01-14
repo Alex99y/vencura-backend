@@ -19,6 +19,7 @@ const client = new MongoClient(config.mongodb.uri || '', {
 let connection: MongoClient | undefined;
 let db: Db | undefined;
 let connectionPromise: Promise<MongoClient> | undefined;
+const DEFAULT_DB_NAME = 'vencura_db';
 
 async function getConnection(): Promise<MongoClient> {
     if (connection) {
@@ -49,19 +50,15 @@ async function getConnection(): Promise<MongoClient> {
     return connectionPromise;
 }
 
-export async function getDb(dbName?: string): Promise<Db> {
-    if (db && !dbName) {
+export async function getDb(): Promise<Db> {
+    if (db) {
         return db;
     }
 
     const client = await getConnection();
-    const database = dbName ? client.db(dbName) : client.db();
+    db = client.db(DEFAULT_DB_NAME);
 
-    if (!dbName) {
-        db = database; // Cache default database
-    }
-
-    return database;
+    return db;
 }
 
 export async function isConnected(): Promise<boolean> {

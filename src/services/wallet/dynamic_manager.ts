@@ -27,14 +27,19 @@ export default class DynamicWalletManager extends BaseWalletManager {
         existingPassword: string,
         newPassword: string
     ) => {
-        const result = await this.client.updatePassword({
-            accountAddress,
-            existingPassword,
-            newPassword,
-            backUpToClientShareService: true,
-        });
+        try {
+            const result = await this.client.updatePassword({
+                accountAddress,
+                existingPassword,
+                newPassword,
+                backUpToClientShareService: true,
+            });
 
-        return result;
+            return result;
+        } catch (error) {
+            // TODO: Handle invalid password error
+            throw error;
+        }
     };
 
     signTransaction = async (
@@ -42,13 +47,18 @@ export default class DynamicWalletManager extends BaseWalletManager {
         preparedTransaction: TransactionSerializable,
         password?: string
     ) => {
-        const signature = await this.client.signTransaction({
-            senderAddress,
-            transaction: preparedTransaction,
-            password,
-        });
+        try {
+            const signature = await this.client.signTransaction({
+                senderAddress,
+                transaction: preparedTransaction,
+                password,
+            });
 
-        return signature;
+            return signature;
+        } catch (error) {
+            // TODO: Handle invalid password error
+            throw error;
+        }
     };
 
     signMessage = async (
@@ -56,13 +66,18 @@ export default class DynamicWalletManager extends BaseWalletManager {
         message: string,
         password?: string
     ) => {
-        const signature = await this.client.signMessage({
-            accountAddress,
-            message,
-            password,
-        });
+        try {
+            const signature = await this.client.signMessage({
+                accountAddress,
+                message,
+                password,
+            });
 
-        return signature;
+            return signature;
+        } catch (error) {
+            // TODO: Handle invalid password error
+            throw error;
+        }
     };
 
     static async initialize(
