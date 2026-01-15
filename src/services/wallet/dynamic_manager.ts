@@ -44,9 +44,7 @@ export default class DynamicWalletManager extends BaseWalletManager {
         }
     };
 
-    signTransaction = async (
-        params: SignTransactionType
-    ) => {
+    signTransaction = async (params: SignTransactionType) => {
         throw new ClientError('Signing transactions is not supported.', 400);
         // try {
 

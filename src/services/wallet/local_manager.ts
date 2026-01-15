@@ -75,12 +75,15 @@ export default class LocalWalletManager extends BaseWalletManager {
             decryptedPrivateKey as `0x${string}`,
             message
         );
-        return signature;  
+        return signature;
     };
 
-    signTransaction = async (
-        { transaction, chain, address, password }: SignTransactionType
-    ) => {
+    signTransaction = async ({
+        transaction,
+        chain,
+        address,
+        password,
+    }: SignTransactionType) => {
         const account = await this.db
             .collection('accounts')
             .findOne({ address });
@@ -95,7 +98,7 @@ export default class LocalWalletManager extends BaseWalletManager {
         const signature = await evmService.signAndSendTransaction(
             transaction,
             chain,
-            decryptedPrivateKey as `0x${string}`,
+            decryptedPrivateKey as `0x${string}`
         );
         return signature;
     };

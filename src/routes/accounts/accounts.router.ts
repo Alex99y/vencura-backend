@@ -28,7 +28,11 @@ const router: express.Router = express.Router();
 
 router.get('/accounts', needsAuthentication, accountsController.getAccounts);
 
-router.get('/account/:address', needsAuthentication, accountsController.getAccount);
+router.get(
+    '/account/:address',
+    needsAuthentication,
+    accountsController.getAccount
+);
 
 router.post(
     '/account',

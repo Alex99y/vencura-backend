@@ -30,13 +30,8 @@ export default class OperationsService {
         return signature;
     };
 
-    signTransaction = async (
-        userId: string,
-        params: SignTransactionType
-    ) => {
-        const txHash = await this.walletManager.signTransaction(
-            params
-        );
+    signTransaction = async (userId: string, params: SignTransactionType) => {
+        const txHash = await this.walletManager.signTransaction(params);
         await this.operationsRepository.storeOperation({
             userId,
             address: params.address,

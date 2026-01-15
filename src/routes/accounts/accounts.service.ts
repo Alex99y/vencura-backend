@@ -26,7 +26,10 @@ export default class AccountsService {
     };
 
     getAccount = async (userId: string, address: string) => {
-        const account = await this.accountsRepository.getAccount(userId, address);
+        const account = await this.accountsRepository.getAccount(
+            userId,
+            address
+        );
         return {
             address: account.address,
             alias: account.alias,
@@ -93,13 +96,23 @@ export default class AccountsService {
         });
     };
 
-    getAccountBalance = async (userId: string, address: string, chain: SupportedChain) => {
+    getAccountBalance = async (
+        userId: string,
+        address: string,
+        chain: SupportedChain
+    ) => {
         const evmService = new EvmService();
-        const account = await this.accountsRepository.getAccount(userId, address);
+        const account = await this.accountsRepository.getAccount(
+            userId,
+            address
+        );
         if (!account) {
             throw new ClientError('Account not found', 404);
         }
-        const balance = await evmService.getAccountNativeBalance(address, chain);
+        const balance = await evmService.getAccountNativeBalance(
+            address,
+            chain
+        );
         return balance.formatted;
     };
 

@@ -30,7 +30,10 @@ export default class AccountsController {
         res.json(accounts);
     };
 
-    getAccount = async (req: RequestWithAddress, res: AuthenticatedResponse) => {
+    getAccount = async (
+        req: RequestWithAddress,
+        res: AuthenticatedResponse
+    ) => {
         const userId = res.locals.userId;
         const address = addressSchema.parse(req.params.address);
         const account = await this.accountService.getAccount(userId, address);

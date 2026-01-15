@@ -1,7 +1,19 @@
-import { createPublicClient, formatUnits, http, isAddress, parseEther, TransactionSerializable } from 'viem';
+import {
+    createPublicClient,
+    formatUnits,
+    http,
+    isAddress,
+    parseEther,
+    TransactionSerializable,
+} from 'viem';
 import { SupportedChain } from '../../config/chains.js';
 import * as viemChains from 'viem/chains';
-import { generatePrivateKey, privateKeyToAccount, signMessage, signTransaction } from 'viem/accounts';
+import {
+    generatePrivateKey,
+    privateKeyToAccount,
+    signMessage,
+    signTransaction,
+} from 'viem/accounts';
 import { ClientError } from '../../utils/errors.js';
 import { createLogger } from '../../utils/logger.js';
 
@@ -17,36 +29,37 @@ export const createEvmAccount = async () => {
     };
 };
 
-
 export default class EvmService {
-
     isValidAddress = (address: string) => {
         return isAddress(address);
-    }
+    };
 
-    getAccountNativeBalance = async (address: string, chain: SupportedChain) => {
+    getAccountNativeBalance = async (
+        address: string,
+        chain: SupportedChain
+    ) => {
         try {
             const publicClient = this.getPublicClient(chain);
             const balance = await publicClient.getBalance({
                 address: address as `0x${string}`,
             });
-    
+
             return {
                 formatted: formatUnits(balance, 18),
                 raw: balance,
-            }
+            };
         } catch (error) {
             throw new ClientError('Failed to get account balance', 400);
         }
-    }
+    };
 
     signMessage = async (
         privateKey: `0x${string}`,
-        message: string,
+        message: string
     ): Promise<string> => {
         const signature = await signMessage({ privateKey, message });
         return signature;
-    }
+    };
 
     signAndSendTransaction = async (
         transaction: {
@@ -54,7 +67,7 @@ export default class EvmService {
             amount: string;
         },
         network: SupportedChain,
-        privateKey: `0x${string}`,
+        privateKey: `0x${string}`
     ): Promise<string> => {
         try {
             const publicClient = this.getPublicClient(network);
@@ -65,18 +78,24 @@ export default class EvmService {
                 value: parseEther(transaction.amount),
                 nonce: 0,
                 gas: 21000n,
-            }
-    
+            };
+
             if (isIP1559) {
-                const { maxFeePerGas, maxPriorityFeePerGas } = await publicClient.estimateFeesPerGas();
+                const { maxFeePerGas, maxPriorityFeePerGas } =
+                    await publicClient.estimateFeesPerGas();
                 tx.maxFeePerGas = maxFeePerGas;
                 tx.maxPriorityFeePerGas = maxPriorityFeePerGas;
             } else {
                 tx.gasPrice = await publicClient.getGasPrice();
             }
-    
-            const signature = await signTransaction({ privateKey, transaction: tx });
-            const hash = await publicClient.sendRawTransaction({ serializedTransaction: signature });
+
+            const signature = await signTransaction({
+                privateKey,
+                transaction: tx,
+            });
+            const hash = await publicClient.sendRawTransaction({
+                serializedTransaction: signature,
+            });
             return hash;
         } catch (error) {
             logger.error(error);

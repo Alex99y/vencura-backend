@@ -23,7 +23,5 @@ export default abstract class BaseWalletManager {
         message: string,
         password?: string
     ): Promise<string>;
-    abstract signTransaction(
-        params: SignTransactionType
-    ): Promise<string>;
+    abstract signTransaction(params: SignTransactionType): Promise<string>;
 }

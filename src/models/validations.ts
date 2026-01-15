@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { SUPPORTED_CHAINS } from '../config/chains.js';
 import EvmService from '../services/chain/evm_service.js';
 
-const evmService = new EvmService();    
+const evmService = new EvmService();
 export const addressSchema = z
     .string()
     .refine(evmService.isValidAddress, { message: 'Invalid EVM address' });
@@ -26,11 +26,10 @@ export const signMessageSchema = z.object({
 export const chainSchema = z.enum(SUPPORTED_CHAINS);
 
 export const signTransactionSchema = z.object({
-    transaction: z
-        .object({
-            to: addressSchema,
-            amount: z.string().or(z.number().transform((val) => val.toString())),
-        }),
+    transaction: z.object({
+        to: addressSchema,
+        amount: z.string().or(z.number().transform((val) => val.toString())),
+    }),
     chain: chainSchema,
     address: addressSchema,
     password: passwordSchema,
