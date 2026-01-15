@@ -1,3 +1,5 @@
+import { SupportedChain } from '../../config/chains.js';
+import EvmService from '../../services/chain/evm_service.js';
 import BaseWalletManager from '../../services/wallet/base_manager.js';
 import { ClientError } from '../../utils/errors.js';
 import OperationsRepository from '../operations/operations.repository.js';
@@ -91,8 +93,14 @@ export default class AccountsService {
         });
     };
 
-    getAccountBalance = async (userId: string, address: string) => {
-        return 0;
+    getAccountBalance = async (userId: string, address: string, chain: SupportedChain) => {
+        const evmService = new EvmService();
+        const account = await this.accountsRepository.getAccount(userId, address);
+        if (!account) {
+            throw new ClientError('Account not found', 404);
+        }
+        const balance = await evmService.getAccountNativeBalance(address, chain);
+        return balance.formatted;
     };
 
     getAccountHistory = async (userId: string, address: string) => {

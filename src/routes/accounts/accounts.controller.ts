@@ -3,6 +3,7 @@ import AccountsService from './accounts.service.js';
 import {
     addressSchema,
     aliasSchema,
+    chainSchema,
     passwordSchema,
 } from '../../models/index.js';
 import { AuthenticatedResponse } from '../../middlewares/needsAuthentication.js';
@@ -78,9 +79,11 @@ export default class AccountsController {
     ) => {
         const userId = res.locals.userId;
         const address = addressSchema.parse(req.params.address);
+        const chain = chainSchema.parse(req.query.chain);
         const balance = await this.accountService.getAccountBalance(
             userId,
-            address
+            address,
+            chain
         );
         res.json({ balance });
     };
