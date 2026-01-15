@@ -1,17 +1,17 @@
 import { createLogger } from './utils/logger.js';
 import { config } from './config/index.js';
 import { closeConnection } from './services/db/mongo.js';
-import initModels from './services/db/models.js';
 import { getWalletManager } from './services/wallet/index.js';
+import DbService from './services/db/db_service.js';
 
 const logger = createLogger();
 
 async function startServer() {
     try {
         logger.info('Initializing MongoDB connection...');
-        const db = await initModels();
+        const dbService = await DbService.getDbService();
         logger.info('Initializing Wallet manager...');
-        await getWalletManager(db, config);
+        await getWalletManager(dbService, config);
         const { default: app } = await import('./server.js');
         const server = app.listen(config.port, config.host, () => {
             logger.info(`Server is running on ${config.host}:${config.port}`);

@@ -1,25 +1,19 @@
 import express from 'express';
 import AccountsController from './accounts.controller.js';
 import AccountsService from './accounts.service.js';
-import { AccountsRepository } from './accounts.repository.js';
-import OperationsRepository from '../operations/operations.repository.js';
 
 // Middlewares
 import { needsAuthentication } from '../../middlewares/needsAuthentication.js';
 import { validateContentType } from '../../middlewares/validateContentType.js';
 
 import { config } from '../../config/index.js';
-import { getDb } from '../../services/db/mongo.js';
 import { getWalletManager } from '../../services/wallet/index.js';
+import DbService from '../../services/db/db_service.js';
 
-const db = await getDb();
-
-const accountsRepository = new AccountsRepository(db);
-const operationsRepository = new OperationsRepository(db);
-const walletManager = await getWalletManager(db, config);
+const dbService = await DbService.getDbService();
+const walletManager = await getWalletManager(dbService, config);
 const accountsService = new AccountsService(
-    accountsRepository,
-    operationsRepository,
+    dbService,
     walletManager
 );
 const accountsController = new AccountsController(accountsService);

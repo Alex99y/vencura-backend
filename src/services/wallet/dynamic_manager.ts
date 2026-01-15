@@ -1,12 +1,12 @@
 import { DynamicEvmWalletClient } from '@dynamic-labs-wallet/node-evm';
 import { ThresholdSignatureScheme } from '@dynamic-labs-wallet/core';
-import { TransactionSerializable } from 'viem';
 import BaseWalletManager from './base_manager.js';
 import { SignTransactionType } from '../../models/validations.js';
 import { ClientError } from '../../utils/errors.js';
+import DbService from '../db/db_service.js';
 
 export default class DynamicWalletManager extends BaseWalletManager {
-    private constructor(private readonly client: DynamicEvmWalletClient) {
+    private constructor(private readonly dbService: DbService, private readonly client: DynamicEvmWalletClient) {
         super();
     }
 
@@ -25,11 +25,15 @@ export default class DynamicWalletManager extends BaseWalletManager {
     };
 
     updateAccountPassword = async (
+        userId: string,
         accountAddress: string,
         existingPassword: string,
         newPassword: string
     ) => {
         try {
+            if (!await this.isOwnedByAccount(userId, accountAddress)) {
+                throw new ClientError('Account not owned by user', 403);
+            }
             const result = await this.client.updatePassword({
                 accountAddress,
                 existingPassword,
@@ -44,7 +48,7 @@ export default class DynamicWalletManager extends BaseWalletManager {
         }
     };
 
-    signTransaction = async (params: SignTransactionType) => {
+    signTransaction = async (userId: string, params: SignTransactionType) => {
         throw new ClientError('Signing transactions is not supported.', 400);
         // try {
 
@@ -62,10 +66,14 @@ export default class DynamicWalletManager extends BaseWalletManager {
     };
 
     signMessage = async (
+        userId: string,
         accountAddress: string,
         message: string,
         password?: string
     ) => {
+        if (!await this.isOwnedByAccount(userId, accountAddress)) {
+            throw new ClientError('Account not owned by user', 403);
+        }
         try {
             const signature = await this.client.signMessage({
                 accountAddress,
@@ -80,7 +88,19 @@ export default class DynamicWalletManager extends BaseWalletManager {
         }
     };
 
+    private isOwnedByAccount = async (userId: string, address: string) => {
+        const account = await this.dbService.accounts.getOne(
+            userId,
+            address
+        );
+        if (!account) {
+            throw new ClientError('Account not found', 404);
+        }
+        return account.userId === userId;
+    }
+
     static async initialize(
+        dbService: DbService,
         environmentId: string,
         apiKey: string,
         debug: boolean
@@ -94,6 +114,6 @@ export default class DynamicWalletManager extends BaseWalletManager {
 
         await client.authenticateApiToken(apiKey);
 
-        return new DynamicWalletManager(client);
+        return new DynamicWalletManager(dbService, client);
     }
 }

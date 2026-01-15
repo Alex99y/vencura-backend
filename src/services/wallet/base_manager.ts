@@ -1,4 +1,3 @@
-import { SupportedChain } from '../../config/chains.js';
 import { SignTransactionType } from '../../models/validations.js';
 
 export type WalletAccount = {
@@ -14,14 +13,19 @@ export default abstract class BaseWalletManager {
         password: string
     ): Promise<WalletAccount>;
     abstract updateAccountPassword(
+        userId: string,
         accountAddress: string,
         existingPassword: string,
         newPassword: string
     ): Promise<void>;
     abstract signMessage(
+        userId: string,
         accountAddress: string,
         message: string,
         password?: string
     ): Promise<string>;
-    abstract signTransaction(params: SignTransactionType): Promise<string>;
+    abstract signTransaction(
+        userId: string,
+        params: SignTransactionType
+    ): Promise<string>;
 }

@@ -1,12 +1,10 @@
 import BaseWalletManager from '../../services/wallet/base_manager.js';
-import OperationsRepository from './operations.repository.js';
-import { SupportedChain } from '../../config/chains.js';
-import EvmService from '../../services/chain/evm_service.js';
+import DbService from '../../services/db/db_service.js';
 import { SignTransactionType } from '../../models/validations.js';
 
 export default class OperationsService {
     constructor(
-        private readonly operationsRepository: OperationsRepository,
+        private readonly dbService: DbService,
         private readonly walletManager: BaseWalletManager
     ) {}
 
@@ -17,11 +15,12 @@ export default class OperationsService {
         password: string
     ) => {
         const signature = await this.walletManager.signMessage(
+            userId,
             accountAddress,
             message,
             password
         );
-        await this.operationsRepository.storeOperation({
+        await this.dbService.operations.storeOne({
             userId,
             address: accountAddress,
             type: 'sign_message',
@@ -31,8 +30,8 @@ export default class OperationsService {
     };
 
     signTransaction = async (userId: string, params: SignTransactionType) => {
-        const txHash = await this.walletManager.signTransaction(params);
-        await this.operationsRepository.storeOperation({
+        const txHash = await this.walletManager.signTransaction(userId, params);
+        await this.dbService.operations.storeOne({
             userId,
             address: params.address,
             type: 'sign_transaction',

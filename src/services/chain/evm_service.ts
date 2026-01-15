@@ -71,12 +71,15 @@ export default class EvmService {
     ): Promise<string> => {
         try {
             const publicClient = this.getPublicClient(network);
+            const nonce = await publicClient.getTransactionCount({
+                address: transaction.to as `0x${string}`,
+            });
             const isIP1559 = this.isIP1559Chain(network);
             const tx: TransactionSerializable = {
                 chainId: this.getViemChain(network).id,
                 to: transaction.to as `0x${string}`,
                 value: parseEther(transaction.amount),
-                nonce: 0,
+                nonce,
                 gas: 21000n,
             };
 

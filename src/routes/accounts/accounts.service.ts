@@ -1,22 +1,17 @@
 import { SupportedChain } from '../../config/chains.js';
 import EvmService from '../../services/chain/evm_service.js';
+import DbService from '../../services/db/db_service.js';
 import BaseWalletManager from '../../services/wallet/base_manager.js';
 import { ClientError } from '../../utils/errors.js';
-import OperationsRepository from '../operations/operations.repository.js';
-import {
-    AccountsRepository,
-    MAX_ACCOUNTS_PER_USER,
-} from './accounts.repository.js';
 
 export default class AccountsService {
     constructor(
-        private readonly accountsRepository: AccountsRepository,
-        private readonly operationsRepository: OperationsRepository,
+        private readonly dbService: DbService,
         private readonly walletManager: BaseWalletManager
     ) {}
 
     getAccounts = async (userId: string) => {
-        const accounts = await this.accountsRepository.getAccounts(userId);
+        const accounts = await this.dbService.accounts.getAll(userId);
         return accounts.map((a) => ({
             address: a.address,
             alias: a.alias,
@@ -26,7 +21,7 @@ export default class AccountsService {
     };
 
     getAccount = async (userId: string, address: string) => {
-        const account = await this.accountsRepository.getAccount(
+        const account = await this.dbService.accounts.getOne(
             userId,
             address
         );
@@ -39,27 +34,19 @@ export default class AccountsService {
     };
 
     createAccount = async (userId: string, alias: string, password: string) => {
-        const accountsCount =
-            await this.accountsRepository.getAccountsCount(userId);
-        if (accountsCount >= MAX_ACCOUNTS_PER_USER) {
-            throw new ClientError(
-                `Maximum number of accounts per user (${MAX_ACCOUNTS_PER_USER}) reached`,
-                400
-            );
-        }
         const account = await this.walletManager.createAccount(
             userId,
             password
         );
 
-        await this.accountsRepository.createAccount(
+        await this.dbService.accounts.createOne(
             userId,
             alias,
             account.address,
             account.walletId,
             account.encryptedPrivateKey
         );
-        await this.operationsRepository.storeOperation({
+        await this.dbService.operations.storeOne({
             userId,
             address: account.address,
             type: 'create_account',
@@ -68,8 +55,8 @@ export default class AccountsService {
     };
 
     updateAccount = async (userId: string, alias: string, address: string) => {
-        await this.accountsRepository.updateAccount(userId, alias, address);
-        await this.operationsRepository.storeOperation({
+        await this.dbService.accounts.updateOne(userId, address, { alias });
+        await this.dbService.operations.storeOne({
             userId,
             address,
             type: 'update_account',
@@ -84,11 +71,12 @@ export default class AccountsService {
         newPassword: string
     ) => {
         await this.walletManager.updateAccountPassword(
+            userId,
             address,
             existingPassword,
             newPassword
         );
-        await this.operationsRepository.storeOperation({
+        await this.dbService.operations.storeOne({
             userId,
             address,
             type: 'update_account',
@@ -102,7 +90,7 @@ export default class AccountsService {
         chain: SupportedChain
     ) => {
         const evmService = new EvmService();
-        const account = await this.accountsRepository.getAccount(
+        const account = await this.dbService.accounts.getOne(
             userId,
             address
         );
@@ -117,7 +105,7 @@ export default class AccountsService {
     };
 
     getAccountHistory = async (userId: string, address: string) => {
-        const history = await this.operationsRepository.getOperations(
+        const history = await this.dbService.operations.getOperations(
             userId,
             address
         );
