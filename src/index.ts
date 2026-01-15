@@ -1,5 +1,5 @@
 import { createLogger } from './utils/logger.js';
-import { config } from './utils/config.js';
+import { config } from './config/index.js';
 import { closeConnection } from './services/db/mongo.js';
 import initModels from './services/db/models.js';
 import { getWalletManager } from './services/wallet/index.js';

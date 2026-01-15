@@ -1,9 +1,11 @@
 import { z } from 'zod';
-import { isValidEvmAddress } from '../utils/evm.js';
+import { SUPPORTED_CHAINS } from '../config/chains.js';
+import EvmService from '../services/chain/evm_service.js';
 
+const evmService = new EvmService();    
 export const addressSchema = z
     .string()
-    .refine(isValidEvmAddress, { message: 'Invalid EVM address' });
+    .refine(evmService.isValidAddress, { message: 'Invalid EVM address' });
 
 export const aliasSchema = z
     .string()
@@ -13,17 +15,25 @@ export const aliasSchema = z
         message: 'Alias must contain only letters and numbers',
     });
 
+export const passwordSchema = z.string().min(8).max(64);
+
 export const signMessageSchema = z.object({
     message: z.string(),
-    accountAddress: addressSchema,
+    address: addressSchema,
+    password: passwordSchema,
 });
+
+export const chainSchema = z.enum(SUPPORTED_CHAINS);
 
 export const signTransactionSchema = z.object({
     transaction: z
-        .string()
-        .refine((t) => t.startsWith('0x'), { message: 'Invalid transaction' })
-        .transform((t) => t as `0x${string}`),
-    accountAddress: addressSchema,
+        .object({
+            to: addressSchema,
+            amount: z.string().or(z.number().transform((val) => val.toString())),
+        }),
+    chain: chainSchema,
+    address: addressSchema,
+    password: passwordSchema,
 });
 
-export const passwordSchema = z.string().min(8).max(64);
+export type SignTransactionType = z.infer<typeof signTransactionSchema>;

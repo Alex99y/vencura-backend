@@ -1,4 +1,4 @@
-import { Config } from '../../utils/config.js';
+import { Config } from '../../config/index.js';
 import BaseWalletManager from './base_manager.js';
 import DynamicWalletManager from './dynamic_manager.js';
 import LocalWalletManager from './local_manager.js';

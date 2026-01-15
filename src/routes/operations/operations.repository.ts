@@ -43,6 +43,8 @@ export default class OperationsRepository {
         const result = await this.db
             .collection('operations')
             .find({ userId, address })
+            .limit(20)
+            .sort({ createdAt: -1 })
             .toArray();
         return result.map((operation) => ({
             createdAt: operation.createdAt,

@@ -8,7 +8,7 @@ import OperationsController from './operations.controller.js';
 import OperationsService from './operations.service.js';
 import OperationsRepository from './operations.repository.js';
 import { getDb } from '../../services/db/mongo.js';
-import { config } from '../../utils/config.js';
+import { config } from '../../config/index.js';
 import { getWalletManager } from '../../services/wallet/index.js';
 
 const db = await getDb();

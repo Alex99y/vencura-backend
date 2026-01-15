@@ -1,4 +1,5 @@
-import { TransactionSerializable } from 'viem';
+import { SupportedChain } from '../../config/chains.js';
+import { SignTransactionType } from '../../models/validations.js';
 
 export type WalletAccount = {
     address: string;
@@ -23,8 +24,6 @@ export default abstract class BaseWalletManager {
         password?: string
     ): Promise<string>;
     abstract signTransaction(
-        accountAddress: string,
-        transaction: TransactionSerializable,
-        password?: string
+        params: SignTransactionType
     ): Promise<string>;
 }

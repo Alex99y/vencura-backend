@@ -5,7 +5,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 
 // Utils
-import { config } from './utils/config.js';
+import { config } from './config/index.js';
 import { createLogger } from './utils/logger.js';
 
 // Routes

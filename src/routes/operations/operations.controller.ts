@@ -11,25 +11,25 @@ export default class OperationsController {
 
     signMessage = async (req: Request, res: AuthenticatedResponse) => {
         const userId = res.locals.userId;
-        const { message, accountAddress } = signMessageSchema.parse(req.body);
+        const { message, address, password } = signMessageSchema.parse(req.body);
         const signature = await this.operationsService.signMessage(
             userId,
             message,
-            accountAddress
+            address,
+            password
         );
         res.json({ signature });
     };
 
     signTransaction = async (req: Request, res: AuthenticatedResponse) => {
         const userId = res.locals.userId;
-        const { transaction, accountAddress } = signTransactionSchema.parse(
+        const { transaction, chain, address, password } = signTransactionSchema.parse(
             req.body
         );
-        const signature = await this.operationsService.signTransaction(
+        const txHash = await this.operationsService.signTransaction(
             userId,
-            transaction,
-            accountAddress
+            { transaction, chain, address, password }
         );
-        res.json({ signature });
+        res.json({ txHash });
     };
 }

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import DynamicAuthService from '../services/dynamic/auth.js';
 import { ClientError } from '../utils/errors.js';
-import { config } from '../utils/config.js';
+import { config } from '../config/index.js';
 
 const dynamicAuthService = new DynamicAuthService();
 

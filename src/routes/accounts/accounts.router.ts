@@ -8,7 +8,7 @@ import OperationsRepository from '../operations/operations.repository.js';
 import { needsAuthentication } from '../../middlewares/needsAuthentication.js';
 import { validateContentType } from '../../middlewares/validateContentType.js';
 
-import { config } from '../../utils/config.js';
+import { config } from '../../config/index.js';
 import { getDb } from '../../services/db/mongo.js';
 import { getWalletManager } from '../../services/wallet/index.js';
 
@@ -27,6 +27,8 @@ const accountsController = new AccountsController(accountsService);
 const router: express.Router = express.Router();
 
 router.get('/accounts', needsAuthentication, accountsController.getAccounts);
+
+router.get('/account/:address', needsAuthentication, accountsController.getAccount);
 
 router.post(
     '/account',

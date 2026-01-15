@@ -1,5 +1,5 @@
 import { JwtPayload } from 'jsonwebtoken';
-import { config } from '../../utils/config.js';
+import { config } from '../../config/index.js';
 import { JwtService } from '../../utils/jwt.js';
 
 // There are more fields in the decoded token, but for the assignment purposes, we only need the following fields

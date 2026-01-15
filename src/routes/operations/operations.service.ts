@@ -1,6 +1,8 @@
 import BaseWalletManager from '../../services/wallet/base_manager.js';
 import OperationsRepository from './operations.repository.js';
-import { toTransactionSerializable } from '../../utils/evm.js';
+import { SupportedChain } from '../../config/chains.js';
+import EvmService from '../../services/chain/evm_service.js';
+import { SignTransactionType } from '../../models/validations.js';
 
 export default class OperationsService {
     constructor(
@@ -11,11 +13,13 @@ export default class OperationsService {
     signMessage = async (
         userId: string,
         message: string,
-        accountAddress: string
+        accountAddress: string,
+        password: string
     ) => {
         const signature = await this.walletManager.signMessage(
             accountAddress,
-            message
+            message,
+            password
         );
         await this.operationsRepository.storeOperation({
             userId,
@@ -28,20 +32,17 @@ export default class OperationsService {
 
     signTransaction = async (
         userId: string,
-        transaction: `0x${string}`,
-        accountAddress: string
+        params: SignTransactionType
     ) => {
-        const transactionSerializable = toTransactionSerializable(transaction);
-        const signature = await this.walletManager.signTransaction(
-            accountAddress,
-            transactionSerializable
+        const txHash = await this.walletManager.signTransaction(
+            params
         );
         await this.operationsRepository.storeOperation({
             userId,
-            address: accountAddress,
+            address: params.address,
             type: 'sign_transaction',
-            description: `Signed the following transaction: ${transaction}`,
+            description: `Signed the following transaction: ${txHash}`,
         });
-        return signature;
+        return txHash;
     };
 }

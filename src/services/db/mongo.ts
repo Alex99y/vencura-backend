@@ -1,5 +1,5 @@
 import { MongoClient, ServerApiVersion, Db } from 'mongodb';
-import { config } from '../../utils/config.js';
+import { config } from '../../config/index.js';
 import { createLogger } from '../../utils/logger.js';
 
 const logger = createLogger();

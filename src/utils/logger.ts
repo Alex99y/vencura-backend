@@ -1,5 +1,5 @@
 import winston from 'winston';
-import { config as configEnv } from './config.js';
+import { config as configEnv } from '../config/index.js';
 
 let logger: winston.Logger | undefined;
 

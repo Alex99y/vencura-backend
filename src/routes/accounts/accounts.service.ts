@@ -23,6 +23,16 @@ export default class AccountsService {
         }));
     };
 
+    getAccount = async (userId: string, address: string) => {
+        const account = await this.accountsRepository.getAccount(userId, address);
+        return {
+            address: account.address,
+            alias: account.alias,
+            createdAt: new Date(account.createdAt).toISOString(),
+            updatedAt: new Date(account.updatedAt).toISOString(),
+        };
+    };
+
     createAccount = async (userId: string, alias: string, password: string) => {
         const accountsCount =
             await this.accountsRepository.getAccountsCount(userId);

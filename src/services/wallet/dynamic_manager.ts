@@ -2,6 +2,8 @@ import { DynamicEvmWalletClient } from '@dynamic-labs-wallet/node-evm';
 import { ThresholdSignatureScheme } from '@dynamic-labs-wallet/core';
 import { TransactionSerializable } from 'viem';
 import BaseWalletManager from './base_manager.js';
+import { SignTransactionType } from '../../models/validations.js';
+import { ClientError } from '../../utils/errors.js';
 
 export default class DynamicWalletManager extends BaseWalletManager {
     private constructor(private readonly client: DynamicEvmWalletClient) {
@@ -43,22 +45,22 @@ export default class DynamicWalletManager extends BaseWalletManager {
     };
 
     signTransaction = async (
-        senderAddress: string,
-        preparedTransaction: TransactionSerializable,
-        password?: string
+        params: SignTransactionType
     ) => {
-        try {
-            const signature = await this.client.signTransaction({
-                senderAddress,
-                transaction: preparedTransaction,
-                password,
-            });
+        throw new ClientError('Signing transactions is not supported.', 400);
+        // try {
 
-            return signature;
-        } catch (error) {
-            // TODO: Handle invalid password error
-            throw error;
-        }
+        //     const signature = await this.client.signTransaction({
+        //         senderAddress: params.address,
+        //         transaction: params.transaction,
+        //         password: params.password,
+        //     });
+
+        //     return signature;
+        // } catch (error) {
+        //     // TODO: Handle invalid password error
+        //     throw error;
+        // }
     };
 
     signMessage = async (

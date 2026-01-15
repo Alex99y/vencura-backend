@@ -13,6 +13,12 @@ export class AccountsRepository {
             .toArray() as Promise<StoredAccount[]>;
     }
 
+    async getAccount(userId: string, address: string): Promise<StoredAccount> {
+        return this.db
+            .collection('accounts')
+            .findOne({ userId, address }) as Promise<StoredAccount>;
+    }
+
     async updateAccount(userId: string, alias: string, address: string) {
         const currentDate = Date.now();
         return this.db

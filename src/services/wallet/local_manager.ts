@@ -1,13 +1,10 @@
 import { TransactionSerializable } from 'viem';
 import BaseWalletManager from './base_manager.js';
 import { encrypt, decrypt } from '../../utils/encryption.js';
-import {
-    createEvmAccount,
-    signEvmMessage,
-    signEvmTransaction,
-} from '../../utils/evm.js';
+import EvmService, { createEvmAccount } from '../chain/evm_service.js';
 import { Db } from 'mongodb';
 import { ClientError } from '../../utils/errors.js';
+import { SignTransactionType } from '../../models/index.js';
 
 export default class LocalWalletManager extends BaseWalletManager {
     private constructor(private readonly db: Db) {
@@ -73,21 +70,20 @@ export default class LocalWalletManager extends BaseWalletManager {
         if (!decryptedPrivateKey) {
             throw new ClientError('Invalid password', 401);
         }
-        const signature = await signEvmMessage(
+        const evmService = new EvmService();
+        const signature = await evmService.signMessage(
             decryptedPrivateKey as `0x${string}`,
             message
         );
-        return signature;
+        return signature;  
     };
 
     signTransaction = async (
-        accountAddress: string,
-        preparedTransaction: TransactionSerializable,
-        password: string
+        { transaction, chain, address, password }: SignTransactionType
     ) => {
         const account = await this.db
             .collection('accounts')
-            .findOne({ address: accountAddress });
+            .findOne({ address });
         if (!account) {
             throw new ClientError('Account not found', 404);
         }
@@ -95,9 +91,11 @@ export default class LocalWalletManager extends BaseWalletManager {
         if (!decryptedPrivateKey) {
             throw new ClientError('Invalid password', 401);
         }
-        const signature = await signEvmTransaction(
+        const evmService = new EvmService();
+        const signature = await evmService.signAndSendTransaction(
+            transaction,
+            chain,
             decryptedPrivateKey as `0x${string}`,
-            preparedTransaction
         );
         return signature;
     };
