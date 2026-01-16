@@ -34,7 +34,9 @@ app.use(
     })
 );
 
-app.use(rateLimit({...config.rateLimit, validate: { xForwardedForHeader: false }}));
+app.use(
+    rateLimit({ ...config.rateLimit, validate: { xForwardedForHeader: false } })
+);
 
 app.use(morgan('dev', { stream: morganStream }));
 
