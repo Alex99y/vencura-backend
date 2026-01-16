@@ -1,7 +1,13 @@
-import type { ThresholdSignatureScheme } from '@dynamic-labs-wallet/core';
+import { ThresholdSignatureScheme } from '@dynamic-labs-wallet/core';
 import type { TransactionSerializable } from 'viem';
 
 // TEMP: Dynamic Labs Wallet Node EVM types are not exported correctly, so we need to declare them here.
+declare module '@dynamic-labs-wallet/core' {
+    enum ThresholdSignatureScheme {
+        TWO_OF_TWO = 'two_of_two',
+        THREE_OF_THREE = 'three_of_three',
+    }
+}
 declare module '@dynamic-labs-wallet/node-evm' {
     class DynamicEvmWalletClient {
         constructor(config: {
