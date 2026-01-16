@@ -33,16 +33,18 @@ export default class LocalWalletManager extends BaseWalletManager {
         existingPassword: string,
         newPassword: string
     ) => {
-        const decryptedPrivateKey = await this.getAndDecryptPrivateKey(userId, accountAddress, existingPassword);
+        const decryptedPrivateKey = await this.getAndDecryptPrivateKey(
+            userId,
+            accountAddress,
+            existingPassword
+        );
         const newEncryptedPrivateKey = await encrypt(
             decryptedPrivateKey,
             newPassword
         );
-        await this.dbService.accounts.updateOne(
-            userId,
-            accountAddress,
-            { encryptedPrivateKey: newEncryptedPrivateKey }
-        );
+        await this.dbService.accounts.updateOne(userId, accountAddress, {
+            encryptedPrivateKey: newEncryptedPrivateKey,
+        });
     };
 
     signMessage = async (
@@ -51,7 +53,11 @@ export default class LocalWalletManager extends BaseWalletManager {
         message: string,
         password: string
     ) => {
-        const decryptedPrivateKey = await this.getAndDecryptPrivateKey(userId, accountAddress, password);
+        const decryptedPrivateKey = await this.getAndDecryptPrivateKey(
+            userId,
+            accountAddress,
+            password
+        );
         const evmService = new EvmService();
         const signature = await evmService.signMessage(
             decryptedPrivateKey as `0x${string}`,
@@ -60,13 +66,15 @@ export default class LocalWalletManager extends BaseWalletManager {
         return signature;
     };
 
-    signTransaction = async (userId: string, {
-        transaction,
-        chain,
-        address,
-        password,
-    }: SignTransactionType) => {
-        const decryptedPrivateKey = await this.getAndDecryptPrivateKey(userId, address, password);
+    signTransaction = async (
+        userId: string,
+        { transaction, chain, address, password }: SignTransactionType
+    ) => {
+        const decryptedPrivateKey = await this.getAndDecryptPrivateKey(
+            userId,
+            address,
+            password
+        );
         const evmService = new EvmService();
         const signature = await evmService.signAndSendTransaction(
             transaction,
@@ -76,20 +84,27 @@ export default class LocalWalletManager extends BaseWalletManager {
         return signature;
     };
 
-    private getAndDecryptPrivateKey = async (userId: string, address: string, password: string) => {
-        const account = await this.dbService.accounts.getOne(
-            userId,
-            address
-        );
+    private getAndDecryptPrivateKey = async (
+        userId: string,
+        address: string,
+        password: string
+    ) => {
+        const account = await this.dbService.accounts.getOne(userId, address);
         if (!account || !account.encryptedPrivateKey) {
-            throw new ClientError('Account not found or private key not found', 404);
+            throw new ClientError(
+                'Account not found or private key not found',
+                404
+            );
         }
-        const decryptedPrivateKey = await decrypt(account.encryptedPrivateKey, password);
+        const decryptedPrivateKey = await decrypt(
+            account.encryptedPrivateKey,
+            password
+        );
         if (!decryptedPrivateKey) {
             throw new ClientError('Invalid password', 401);
         }
         return decryptedPrivateKey as `0x${string}`;
-    }
+    };
 
     static async initialize(dbService: DbService) {
         return new LocalWalletManager(dbService);

@@ -1,18 +1,22 @@
 import { Collection, Db } from 'mongodb';
-import { StoredAccount, StoredOperation, StoredOperationResult, StoredOperationWithoutIdAndCreatedAt } from './types.js';
+import {
+    StoredAccount,
+    StoredOperation,
+    StoredOperationResult,
+    StoredOperationWithoutIdAndCreatedAt,
+} from './types.js';
 import { createLogger } from '../../utils/logger.js';
 import { getDb } from './mongo.js';
 import { ClientError } from '../../utils/errors.js';
 const logger = createLogger();
 
-const ACCOUNTS_COLLECTION = "accounts";
-const OPERATIONS_COLLECTION = "operations";
+const ACCOUNTS_COLLECTION = 'accounts';
+const OPERATIONS_COLLECTION = 'operations';
 
 // TODO: This should be configurable
 const MAX_ACCOUNTS_PER_USER = 10;
 
-
-async function createCollections (db: Db) {
+async function createCollections(db: Db) {
     try {
         await db.createCollection(ACCOUNTS_COLLECTION);
         const accounts = db.collection(ACCOUNTS_COLLECTION);
@@ -20,8 +24,8 @@ async function createCollections (db: Db) {
         await db.createCollection(OPERATIONS_COLLECTION);
         const operations = db.collection(OPERATIONS_COLLECTION);
         operations.createIndex(
-                { _id: 1, userId: 1, address: 1, createdAt: 1 },
-                { unique: true }
+            { _id: 1, userId: 1, address: 1, createdAt: 1 },
+            { unique: true }
         );
     } catch (error) {
         logger.error('Error creating collections:', error);
@@ -31,7 +35,9 @@ async function createCollections (db: Db) {
 
 export default class DbService {
     private readonly accountsCollection: Collection<StoredAccount>;
-    private readonly operationsCollection: Collection<Omit<StoredOperation, '_id'>>;
+    private readonly operationsCollection: Collection<
+        Omit<StoredOperation, '_id'>
+    >;
     private constructor(private readonly db: Db) {
         this.accountsCollection = db.collection(ACCOUNTS_COLLECTION);
         this.operationsCollection = db.collection(OPERATIONS_COLLECTION);
@@ -39,10 +45,18 @@ export default class DbService {
 
     public readonly accounts = {
         getAll: async (userId: string): Promise<StoredAccount[]> => {
-            return this.accountsCollection.find({ userId }).toArray() as Promise<StoredAccount[]>;
+            return this.accountsCollection
+                .find({ userId })
+                .toArray() as Promise<StoredAccount[]>;
         },
-        getOne: async (userId: string, address: string): Promise<StoredAccount> => {
-            return this.accountsCollection.findOne({ userId, address }) as Promise<StoredAccount>;
+        getOne: async (
+            userId: string,
+            address: string
+        ): Promise<StoredAccount> => {
+            return this.accountsCollection.findOne({
+                userId,
+                address,
+            }) as Promise<StoredAccount>;
         },
         createOne: async (
             userId: string,
@@ -61,7 +75,7 @@ export default class DbService {
                 updatedAt: currentDate,
                 encryptedPrivateKey,
             };
-    
+
             // Use a transaction to make the count check and insert atomic to avoid race conditions
             const session = this.db.client.startSession();
             try {
@@ -83,7 +97,11 @@ export default class DbService {
                 await session.endSession();
             }
         },
-        updateOne: async (userId: string, address: string, set: Partial<StoredAccount>) => {
+        updateOne: async (
+            userId: string,
+            address: string,
+            set: Partial<StoredAccount>
+        ) => {
             const currentDate = Date.now();
             return await this.accountsCollection.updateOne(
                 { userId, address },
@@ -92,11 +110,11 @@ export default class DbService {
         },
         getCount: async (userId: string): Promise<number> => {
             return await this.accountsCollection.countDocuments({ userId });
-        }
-    }
+        },
+    };
 
     public readonly operations = {
-        storeOne: async(
+        storeOne: async (
             operationToStore: StoredOperationWithoutIdAndCreatedAt
         ) => {
             const currentDate = Date.now();
@@ -120,10 +138,10 @@ export default class DbService {
                 type: operation.type,
                 description: operation.description,
             }));
-        }
-    }
+        },
+    };
 
-    static async getDbService () {
+    static async getDbService() {
         const db = await getDb();
         await createCollections(db);
         return new DbService(db);

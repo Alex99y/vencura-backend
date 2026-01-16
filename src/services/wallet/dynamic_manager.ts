@@ -6,7 +6,10 @@ import { ClientError } from '../../utils/errors.js';
 import DbService from '../db/db_service.js';
 
 export default class DynamicWalletManager extends BaseWalletManager {
-    private constructor(private readonly dbService: DbService, private readonly client: DynamicEvmWalletClient) {
+    private constructor(
+        private readonly dbService: DbService,
+        private readonly client: DynamicEvmWalletClient
+    ) {
         super();
     }
 
@@ -31,7 +34,7 @@ export default class DynamicWalletManager extends BaseWalletManager {
         newPassword: string
     ) => {
         try {
-            if (!await this.isOwnedByAccount(userId, accountAddress)) {
+            if (!(await this.isOwnedByAccount(userId, accountAddress))) {
                 throw new ClientError('Account not owned by user', 403);
             }
             const result = await this.client.updatePassword({
@@ -71,7 +74,7 @@ export default class DynamicWalletManager extends BaseWalletManager {
         message: string,
         password?: string
     ) => {
-        if (!await this.isOwnedByAccount(userId, accountAddress)) {
+        if (!(await this.isOwnedByAccount(userId, accountAddress))) {
             throw new ClientError('Account not owned by user', 403);
         }
         try {
@@ -89,15 +92,12 @@ export default class DynamicWalletManager extends BaseWalletManager {
     };
 
     private isOwnedByAccount = async (userId: string, address: string) => {
-        const account = await this.dbService.accounts.getOne(
-            userId,
-            address
-        );
+        const account = await this.dbService.accounts.getOne(userId, address);
         if (!account) {
             throw new ClientError('Account not found', 404);
         }
         return account.userId === userId;
-    }
+    };
 
     static async initialize(
         dbService: DbService,

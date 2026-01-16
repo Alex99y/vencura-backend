@@ -21,10 +21,7 @@ export default class AccountsService {
     };
 
     getAccount = async (userId: string, address: string) => {
-        const account = await this.dbService.accounts.getOne(
-            userId,
-            address
-        );
+        const account = await this.dbService.accounts.getOne(userId, address);
         return {
             address: account.address,
             alias: account.alias,
@@ -90,10 +87,7 @@ export default class AccountsService {
         chain: SupportedChain
     ) => {
         const evmService = new EvmService();
-        const account = await this.dbService.accounts.getOne(
-            userId,
-            address
-        );
+        const account = await this.dbService.accounts.getOne(userId, address);
         if (!account) {
             throw new ClientError('Account not found', 404);
         }

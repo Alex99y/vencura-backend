@@ -12,10 +12,7 @@ import DbService from '../../services/db/db_service.js';
 
 const dbService = await DbService.getDbService();
 const walletManager = await getWalletManager(dbService, config);
-const operationsService = new OperationsService(
-    dbService,
-    walletManager
-);
+const operationsService = new OperationsService(dbService, walletManager);
 const operationsController = new OperationsController(operationsService);
 
 const router: express.Router = express.Router();

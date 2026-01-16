@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+import { ObjectId } from 'mongodb';
 
 export interface StoredAccount {
     _id: ObjectId;
@@ -29,6 +29,7 @@ export interface StoredOperation extends StoredOperationResult {
     address: string;
 }
 
-export interface StoredOperationWithoutIdAndCreatedAt extends Omit<StoredOperation, '_id' | 'createdAt'> {
-}
-
+export interface StoredOperationWithoutIdAndCreatedAt extends Omit<
+    StoredOperation,
+    '_id' | 'createdAt'
+> {}
