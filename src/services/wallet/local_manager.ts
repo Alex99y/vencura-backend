@@ -3,7 +3,7 @@ import { encrypt, decrypt } from '../../utils/encryption.js';
 import EvmService, { createEvmAccount } from '../chain/evm_service.js';
 import { ClientError } from '../../utils/errors.js';
 import { SignTransactionType } from '../../models/index.js';
-import DbService from '../db/db_service.js';
+import type DbService from '../db/db_service.js';
 
 export default class LocalWalletManager extends BaseWalletManager {
     private constructor(private readonly dbService: DbService) {
@@ -96,14 +96,15 @@ export default class LocalWalletManager extends BaseWalletManager {
                 404
             );
         }
-        const decryptedPrivateKey = await decrypt(
-            account.encryptedPrivateKey,
-            password
-        );
-        if (!decryptedPrivateKey) {
+        try {
+            const decryptedPrivateKey = await decrypt(
+                account.encryptedPrivateKey,
+                password
+            );
+            return decryptedPrivateKey as `0x${string}`;
+        } catch (error) {
             throw new ClientError('Invalid password', 401);
         }
-        return decryptedPrivateKey as `0x${string}`;
     };
 
     static async initialize(dbService: DbService) {

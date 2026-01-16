@@ -37,6 +37,7 @@
         "@types/jsonwebtoken": "^9.0.10",
         "@types/morgan": "^1.9.10",
         "@types/node": "20.19.0",
+        "nock": "^14.0.10",
         "prettier": "^3.7.4",
         "tsx": "^4.21.0",
         "typescript": "5.8.3"

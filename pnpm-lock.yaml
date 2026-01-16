@@ -75,6 +75,9 @@ importers:
       '@types/node':
         specifier: 20.19.0
         version: 20.19.0
+      nock:
+        specifier: ^14.0.10
+        version: 14.0.10
       prettier:
         specifier: ^3.7.4
         version: 3.7.4
@@ -370,6 +373,10 @@ packages:
     resolution: {integrity: sha512-JEW4DEtBzfe8HvUYecLU9e6+XJnKDlUAIve8FvPzF3Kzs6Xo/KuZkZJsDH0wJXl/qEZbeeE7edxDNY3kMs39hQ==}
     engines: {node: '>= 18'}
 
+  '@mswjs/interceptors@0.39.8':
+    resolution: {integrity: sha512-2+BzZbjRO7Ct61k8fMNHEtoKjeWI9pIlHFTqBwZ5icHpqszIgEZbjb1MW5Z0+bITTCTl3gk4PDBxs9tA/csXvA==}
+    engines: {node: '>=18'}
+
   '@noble/ciphers@0.4.1':
     resolution: {integrity: sha512-QCOA9cgf3Rc33owG0AYBB9wszz+Ul2kramWN8tXG44Gyciud/tbkEqvxRF/IpqQaBpRBNi9f4jdNxqB2CQCIXg==}
 
@@ -423,6 +430,15 @@ packages:
   '@noble/post-quantum@0.5.4':
     resolution: {integrity: sha512-leww0zzIirrvwaYMPI9fj6aRIlA/c6Y0/lifQQ1YOOyHEr0MNH3yYpjXeiVG+tWdPps4XxGclFWX2INPO3Yo5w==}
     engines: {node: '>= 20.19.0'}
+
+  '@open-draft/deferred-promise@2.2.0':
+    resolution: {integrity: sha512-CecwLWx3rhxVQF6V4bAgPS5t+So2sTbPgAzafKkVizyi7tlwpcFpdFqq+wqF2OwNBmqFuu6tOyouTuxgpMfzmA==}
+
+  '@open-draft/logger@0.3.0':
+    resolution: {integrity: sha512-X2g45fzhxH238HKO4xbSr7+wBS8Fvw6ixhTDuvLd5mqh6bJJCFAPwU9mPDxbcrRtfxv4u5IHCEH77BmxvXmmxQ==}
+
+  '@open-draft/until@2.1.0':
+    resolution: {integrity: sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==}
 
   '@rollup/rollup-android-arm-eabi@4.55.1':
     resolution: {integrity: sha512-9R0DM/ykwfGIlNu6+2U09ga0WXeZ9MRC2Ter8jnz8415VbuIykVuc6bhdrbORFZANDmTDvq26mJrEVTl8TdnDg==}
@@ -1226,6 +1242,9 @@ packages:
     resolution: {integrity: sha512-WvtOiug1VFrE9v1Cydwm+FnXd3+w9GaeVUss5W4v/SLy3UW00vP+6iNF2SdnfiBoLy4bTqVdkftNGTUeOFVsbA==}
     engines: {node: '>=6.5.0', npm: '>=3'}
 
+  is-node-process@1.2.0:
+    resolution: {integrity: sha512-Vg4o6/fqPxIjtxgUH5QLJhwZ7gW5diGCVlXpuUfELC62CuxM1iHcRe51f2W1FDy04Ai4KJkagKjx3XaqyfRKXw==}
+
   is-promise@4.0.0:
     resolution: {integrity: sha512-hvpoI6korhJMnej285dSg6nu1+e6uxs7zG3BYAm5byqDsgJNWwxzM6z6iZiAgQR4TJ30JmBTOwqZUw3WlyH3AQ==}
 
@@ -1240,6 +1259,9 @@ packages:
 
   jose@4.15.9:
     resolution: {integrity: sha512-1vUQX+IdDMVPj4k8kOxgUqlcK518yluMuGZwqlr44FS1ppZB/5GWh4rZG89erpOBOJjU/OBsnCVFfapsRz6nEA==}
+
+  json-stringify-safe@5.0.1:
+    resolution: {integrity: sha512-ZClg6AaYvamvYEE82d3Iyd3vSSIjQ+odgjaTzRuO3s7toCdFKczob2i0zCh7JE8kWn17yvAWhUVxvqGwUalsRA==}
 
   jsonwebtoken@9.0.3:
     resolution: {integrity: sha512-MT/xP0CrubFRNLNKvxJ2BYfy53Zkm++5bX9dtuPbqAeQpTVe0MQTFhao8+Cp//EmJp244xt6Drw/GVEGCUj40g==}
@@ -1396,6 +1418,10 @@ packages:
     resolution: {integrity: sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg==}
     engines: {node: '>= 0.6'}
 
+  nock@14.0.10:
+    resolution: {integrity: sha512-Q7HjkpyPeLa0ZVZC5qpxBt5EyLczFJ91MEewQiIi9taWuA0KB/MDJlUWtON+7dGouVdADTQsf9RA7TZk6D8VMw==}
+    engines: {node: '>=18.20.0 <20 || >=20.12.1'}
+
   node-fetch-native@1.6.7:
     resolution: {integrity: sha512-g9yhqoedzIUm0nTnTqAQvueMPVOuIY16bqgAJJC8XOOubYFNwz6IER9qs0Gq2Xd0+CecCKFjtdDTMA4u4xG06Q==}
 
@@ -1447,6 +1473,9 @@ packages:
 
   openapi3-ts@4.5.0:
     resolution: {integrity: sha512-jaL+HgTq2Gj5jRcfdutgRGLosCy/hT8sQf6VOy+P+g36cZOjI1iukdPnijC+4CmeRzg/jEllJUboEic2FhxhtQ==}
+
+  outvariant@1.4.3:
+    resolution: {integrity: sha512-+Sl2UErvtsoajRDKCE5/dBz4DIvHXQQnAxtQTF04OJxY0+DyZXSo5P5Bb7XYWOh81syohlYL24hbDwxedPUJCA==}
 
   ox@0.11.3:
     resolution: {integrity: sha512-1bWYGk/xZel3xro3l8WGg6eq4YEKlaqvyMtVhfMFpbJzK2F6rj4EDRtqDCWVEJMkzcmEi9uW2QxsqELokOlarw==}
@@ -1506,6 +1535,10 @@ packages:
 
   process-warning@1.0.0:
     resolution: {integrity: sha512-du4wfLyj4yCZq1VupnVSZmRsPJsNuxoDQFdCFHLaYiEbFBD7QE0a+I4D7hOxrVnh78QE/YipFAj9lXHiXocV+Q==}
+
+  propagate@2.0.1:
+    resolution: {integrity: sha512-vGrhOavPSTz4QVNuBNdcNXePNdNMaO1xj9yBeH1ScQPjk/rhg9sSlCXPhMkFuaNNW/syTvYqsnbIJxMBfRbbag==}
+    engines: {node: '>= 8'}
 
   proxy-addr@2.0.7:
     resolution: {integrity: sha512-llQsMLSUDUPT44jdrU/O37qlnifitDP+ZwrmmZcoSKyLKvtZxpyV0n2/bD/N4tBAAZ/gJEdZU7KMraoK1+XYAg==}
@@ -1652,6 +1685,9 @@ packages:
 
   stream-shift@1.0.3:
     resolution: {integrity: sha512-76ORR0DO1o1hlKwTbi/DM3EXWGf3ZJYO8cXX5RJwnul2DEg2oyoZyjLNoQM8WsvZiFKCRfC1O0J7iCvie3RZmQ==}
+
+  strict-event-emitter@0.5.1:
+    resolution: {integrity: sha512-vMgjE/GGEPEFnhFub6pa4FmJBRBVOLpIII2hvCZ8Kzb7K0hlHo7mQv6xYrBvCL2LtAIBwFUK8wvuJgTVSQ5MFQ==}
 
   strict-uri-encode@2.0.0:
     resolution: {integrity: sha512-QwiXZgpRcKkhTj2Scnn++4PKtWsH0kpzZ62L2R6c/LUVYv7hVnZqcg2+sMuT6R7Jusu1vviK/MFsu6kNJfWlEQ==}
@@ -2467,6 +2503,15 @@ snapshots:
 
   '@msgpack/msgpack@3.1.2': {}
 
+  '@mswjs/interceptors@0.39.8':
+    dependencies:
+      '@open-draft/deferred-promise': 2.2.0
+      '@open-draft/logger': 0.3.0
+      '@open-draft/until': 2.1.0
+      is-node-process: 1.2.0
+      outvariant: 1.4.3
+      strict-event-emitter: 0.5.1
+
   '@noble/ciphers@0.4.1': {}
 
   '@noble/ciphers@1.3.0': {}
@@ -2509,6 +2554,15 @@ snapshots:
     dependencies:
       '@noble/curves': 2.0.1
       '@noble/hashes': 2.0.1
+
+  '@open-draft/deferred-promise@2.2.0': {}
+
+  '@open-draft/logger@0.3.0':
+    dependencies:
+      is-node-process: 1.2.0
+      outvariant: 1.4.3
+
+  '@open-draft/until@2.1.0': {}
 
   '@rollup/rollup-android-arm-eabi@4.55.1':
     optional: true
@@ -3508,6 +3562,8 @@ snapshots:
 
   is-hex-prefixed@1.0.0: {}
 
+  is-node-process@1.2.0: {}
+
   is-promise@4.0.0: {}
 
   is-stream@2.0.1: {}
@@ -3521,6 +3577,8 @@ snapshots:
       ws: 8.18.3
 
   jose@4.15.9: {}
+
+  json-stringify-safe@5.0.1: {}
 
   jsonwebtoken@9.0.3:
     dependencies:
@@ -3664,6 +3722,12 @@ snapshots:
 
   negotiator@1.0.0: {}
 
+  nock@14.0.10:
+    dependencies:
+      '@mswjs/interceptors': 0.39.8
+      json-stringify-safe: 5.0.1
+      propagate: 2.0.1
+
   node-fetch-native@1.6.7: {}
 
   node-mock-http@1.0.4: {}
@@ -3710,6 +3774,8 @@ snapshots:
   openapi3-ts@4.5.0:
     dependencies:
       yaml: 2.8.2
+
+  outvariant@1.4.3: {}
 
   ox@0.11.3(typescript@5.8.3)(zod@4.0.5):
     dependencies:
@@ -3783,6 +3849,8 @@ snapshots:
   prettier@3.7.4: {}
 
   process-warning@1.0.0: {}
+
+  propagate@2.0.1: {}
 
   proxy-addr@2.0.7:
     dependencies:
@@ -3966,6 +4034,8 @@ snapshots:
   std-env@3.10.0: {}
 
   stream-shift@1.0.3: {}
+
+  strict-event-emitter@0.5.1: {}
 
   strict-uri-encode@2.0.0: {}
 

@@ -81,7 +81,7 @@ export default class DbService {
             try {
                 await session.withTransaction(async () => {
                     const count = await this.db
-                        .collection('accounts')
+                        .collection(ACCOUNTS_COLLECTION)
                         .countDocuments({ userId }, { session });
                     if (count >= MAX_ACCOUNTS_PER_USER) {
                         throw new ClientError(
@@ -90,7 +90,7 @@ export default class DbService {
                         );
                     }
                     await this.db
-                        .collection('accounts')
+                        .collection(ACCOUNTS_COLLECTION)
                         .insertOne(account, { session });
                 });
             } finally {
