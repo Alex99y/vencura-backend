@@ -3,6 +3,7 @@ import { config } from './config/index.js';
 import { closeConnection } from './services/db/mongo.js';
 import { getWalletManager } from './services/wallet/index.js';
 import DbService from './services/db/db_service.js';
+import getApp from './server.js';
 
 const logger = createLogger();
 
@@ -11,8 +12,8 @@ async function startServer() {
         logger.info('Initializing MongoDB connection...');
         const dbService = await DbService.getDbService();
         logger.info('Initializing Wallet manager...');
-        await getWalletManager(dbService, config);
-        const { default: app } = await import('./server.js');
+        const walletManager = await getWalletManager(dbService, config);
+        const app = getApp(dbService, walletManager);
         const server = app.listen(config.port, config.host, () => {
             logger.info(`Server is running on ${config.host}:${config.port}`);
         });

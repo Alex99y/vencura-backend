@@ -1,5 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { needsAuthentication, type AuthenticatedResponse } from './needs_authentication.js';
+import {
+    needsAuthentication,
+    type AuthenticatedResponse,
+} from './needs_authentication.js';
 import { Request, NextFunction } from 'express';
 import { ClientError } from '../utils/errors.js';
 import type { DecodedToken } from '../services/dynamic/auth.js';
@@ -38,7 +41,7 @@ describe('needsAuthentication middleware', () => {
     beforeEach(() => {
         // Reset mocks before each test
         vi.clearAllMocks();
-        
+
         // Set default return values
         mockDecodeToken.mockReturnValue({
             sub: 'test-user-id',
@@ -57,13 +60,17 @@ describe('needsAuthentication middleware', () => {
     });
 
     it('should throw an error if the token is not provided', async () => {
-        await expect(() => needsAuthentication(req, res, next)).rejects.toThrow(ClientError);
+        await expect(() => needsAuthentication(req, res, next)).rejects.toThrow(
+            ClientError
+        );
         expect(next).not.toHaveBeenCalled();
     });
     it('should throw an error if the token is invalid', async () => {
         req.headers.authorization = 'test-token-invalid';
         mockDecodeToken.mockReturnValue(null);
-        await expect(() => needsAuthentication(req, res, next)).rejects.toThrow(ClientError);
+        await expect(() => needsAuthentication(req, res, next)).rejects.toThrow(
+            ClientError
+        );
         expect(next).not.toHaveBeenCalled();
     });
     it('should throw an error if the token is not valid for the environment', async () => {
@@ -72,7 +79,9 @@ describe('needsAuthentication middleware', () => {
             sub: 'test-user-id',
             environment_id: 'invalid-env-id',
         } as DecodedToken);
-        await expect(() => needsAuthentication(req, res, next)).rejects.toThrow(ClientError);
+        await expect(() => needsAuthentication(req, res, next)).rejects.toThrow(
+            ClientError
+        );
         expect(next).not.toHaveBeenCalled();
     });
     it('should throw an error if the token has expired', async () => {
@@ -82,13 +91,17 @@ describe('needsAuthentication middleware', () => {
             environment_id: 'test-env-id',
             exp: Math.floor(Date.now() / 1000) - 3600, // 1 hour ago
         } as DecodedToken);
-        await expect(() => needsAuthentication(req, res, next)).rejects.toThrow(ClientError);
+        await expect(() => needsAuthentication(req, res, next)).rejects.toThrow(
+            ClientError
+        );
         expect(next).not.toHaveBeenCalled();
     });
     it('should throw an error if the token is invalid', async () => {
         req.headers.authorization = 'test-token';
         mockValidateAuthentication.mockResolvedValue(false);
-        await expect(() => needsAuthentication(req, res, next)).rejects.toThrow(ClientError);
+        await expect(() => needsAuthentication(req, res, next)).rejects.toThrow(
+            ClientError
+        );
         expect(next).not.toHaveBeenCalled();
     });
     it('should set the user id in the response locals', async () => {

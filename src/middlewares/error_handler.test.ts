@@ -28,7 +28,9 @@ describe('errorHandler middleware', () => {
     });
 
     it('should handle ZodError', () => {
-        const err = new ZodError([{ message: 'test', path: ['test'], code: 'custom', input: 'test' }]);
+        const err = new ZodError([
+            { message: 'test', path: ['test'], code: 'custom', input: 'test' },
+        ]);
         errorHandler(err, req, res, next);
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
@@ -49,7 +51,8 @@ describe('errorHandler middleware', () => {
         errorHandler(err, req, res, next);
         expect(res.status).toHaveBeenCalledWith(500);
         expect(res.json).toHaveBeenCalledWith({
-            message: 'Internal Server Error. Please, report this issue to the administrator.',
+            message:
+                'Internal Server Error. Please, report this issue to the administrator.',
         });
         expect(next).not.toHaveBeenCalled();
     });

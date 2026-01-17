@@ -7,7 +7,8 @@ import { ClientError } from '../../utils/errors.js';
 export default class AccountsService {
     constructor(
         private readonly dbService: DbService,
-        private readonly walletManager: BaseWalletManager
+        private readonly walletManager: BaseWalletManager,
+        private readonly evmService: EvmService
     ) {}
 
     getAccounts = async (userId: string) => {
@@ -86,12 +87,11 @@ export default class AccountsService {
         address: string,
         chain: SupportedChain
     ) => {
-        const evmService = new EvmService();
         const account = await this.dbService.accounts.getOne(userId, address);
         if (!account) {
             throw new ClientError('Account not found', 404);
         }
-        const balance = await evmService.getAccountNativeBalance(
+        const balance = await this.evmService.getAccountNativeBalance(
             address,
             chain
         );

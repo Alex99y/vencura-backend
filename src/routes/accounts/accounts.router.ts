@@ -1,54 +1,50 @@
 import express from 'express';
-import AccountsController from './accounts.controller.js';
-import AccountsService from './accounts.service.js';
+import type AccountsController from './accounts.controller.js';
 
 // Middlewares
 import { needsAuthentication } from '../../middlewares/needs_authentication.js';
 import { validateContentType } from '../../middlewares/validate_content_type.js';
 
-import { config } from '../../config/index.js';
-import { getWalletManager } from '../../services/wallet/index.js';
-import DbService from '../../services/db/db_service.js';
+export default function (accountsController: AccountsController) {
+    const router: express.Router = express.Router();
 
-const dbService = await DbService.getDbService();
-const walletManager = await getWalletManager(dbService, config);
-const accountsService = new AccountsService(dbService, walletManager);
-const accountsController = new AccountsController(accountsService);
+    router.get(
+        '/accounts',
+        needsAuthentication,
+        accountsController.getAccounts
+    );
 
-const router: express.Router = express.Router();
+    router.get(
+        '/account/:address',
+        needsAuthentication,
+        accountsController.getAccount
+    );
 
-router.get('/accounts', needsAuthentication, accountsController.getAccounts);
+    router.post(
+        '/account',
+        validateContentType,
+        needsAuthentication,
+        accountsController.createAccount
+    );
 
-router.get(
-    '/account/:address',
-    needsAuthentication,
-    accountsController.getAccount
-);
+    router.put(
+        '/account/:address',
+        validateContentType,
+        needsAuthentication,
+        accountsController.updateAccount
+    );
 
-router.post(
-    '/account',
-    validateContentType,
-    needsAuthentication,
-    accountsController.createAccount
-);
+    router.get(
+        '/account/:address/balance',
+        needsAuthentication,
+        accountsController.getAccountBalance
+    );
 
-router.put(
-    '/account/:address',
-    validateContentType,
-    needsAuthentication,
-    accountsController.updateAccount
-);
+    router.get(
+        '/account/:address/history',
+        needsAuthentication,
+        accountsController.getAccountHistory
+    );
 
-router.get(
-    '/account/:address/balance',
-    needsAuthentication,
-    accountsController.getAccountBalance
-);
-
-router.get(
-    '/account/:address/history',
-    needsAuthentication,
-    accountsController.getAccountHistory
-);
-
-export default router;
+    return router;
+}

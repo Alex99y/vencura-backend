@@ -5,7 +5,9 @@ import { ClientError } from '../utils/errors.js';
 
 describe('validateContentType middleware', () => {
     it('should validate the content type', () => {
-        const req = { headers: { 'content-type': 'application/json' } } as Request;
+        const req = {
+            headers: { 'content-type': 'application/json' },
+        } as Request;
         const res = { status: vi.fn(), json: vi.fn() } as unknown as Response;
         const next = vi.fn() as NextFunction;
         validateContentType(req, res, next);

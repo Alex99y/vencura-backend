@@ -1,12 +1,12 @@
-import { Request } from 'express';
-import AccountsService from './accounts.service.js';
+import type { Request } from 'express';
+import type AccountsService from './accounts.service.js';
 import {
     addressSchema,
     aliasSchema,
     chainSchema,
     passwordSchema,
 } from '../../models/index.js';
-import { AuthenticatedResponse } from '../../middlewares/needs_authentication.js';
+import type { AuthenticatedResponse } from '../../middlewares/needs_authentication.js';
 
 type RequestWithAddress = Request<{ address: string }>;
 
