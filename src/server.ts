@@ -13,7 +13,7 @@ import accountsRouter from './routes/accounts/accounts.router.js';
 import operationsRouter from './routes/operations/operations.router.js';
 
 // Middlewares
-import { errorHandler } from './middlewares/errorHandler.js';
+import { errorHandler } from './middlewares/error_handler.js';
 
 const logger = createLogger();
 

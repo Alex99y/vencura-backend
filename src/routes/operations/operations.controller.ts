@@ -4,7 +4,7 @@ import {
     signMessageSchema,
     signTransactionSchema,
 } from '../../models/index.js';
-import { AuthenticatedResponse } from '../../middlewares/needsAuthentication.js';
+import { AuthenticatedResponse } from '../../middlewares/needs_authentication.js';
 
 export default class OperationsController {
     constructor(private readonly operationsService: OperationsService) {}

@@ -6,7 +6,7 @@ import {
     chainSchema,
     passwordSchema,
 } from '../../models/index.js';
-import { AuthenticatedResponse } from '../../middlewares/needsAuthentication.js';
+import { AuthenticatedResponse } from '../../middlewares/needs_authentication.js';
 
 type RequestWithAddress = Request<{ address: string }>;
 

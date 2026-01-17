@@ -3,8 +3,8 @@ import AccountsController from './accounts.controller.js';
 import AccountsService from './accounts.service.js';
 
 // Middlewares
-import { needsAuthentication } from '../../middlewares/needsAuthentication.js';
-import { validateContentType } from '../../middlewares/validateContentType.js';
+import { needsAuthentication } from '../../middlewares/needs_authentication.js';
+import { validateContentType } from '../../middlewares/validate_content_type.js';
 
 import { config } from '../../config/index.js';
 import { getWalletManager } from '../../services/wallet/index.js';

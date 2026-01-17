@@ -1,8 +1,8 @@
 import express from 'express';
 
 // Middlewares
-import { needsAuthentication } from '../../middlewares/needsAuthentication.js';
-import { validateContentType } from '../../middlewares/validateContentType.js';
+import { needsAuthentication } from '../../middlewares/needs_authentication.js';
+import { validateContentType } from '../../middlewares/validate_content_type.js';
 
 import OperationsController from './operations.controller.js';
 import OperationsService from './operations.service.js';
