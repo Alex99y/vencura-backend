@@ -37,6 +37,7 @@ describe('DbService', () => {
     let mockedDbService: Partial<DbService>;
 
     beforeEach(() => {
+        vi.clearAllMocks();
         collection = vi.fn() as any;
         db = {
             client: {} as any,

@@ -22,6 +22,7 @@ describe('LocalWalletManager', () => {
     let dbService: Partial<DbService>;
 
     beforeEach(() => {
+        vi.clearAllMocks();
         dbService = {
             accounts: {
                 getOne: vi.fn(),
