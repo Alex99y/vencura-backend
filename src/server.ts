@@ -1,4 +1,7 @@
 import express from 'express';
+
+// Middlewares
+import { errorHandler } from './middlewares/error_handler.js';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import cors from 'cors';
@@ -12,8 +15,7 @@ import { createLogger } from './utils/logger.js';
 import accountsRouter from './routes/accounts/accounts.router.js';
 import operationsRouter from './routes/operations/operations.router.js';
 
-// Middlewares
-import { errorHandler } from './middlewares/error_handler.js';
+// Controllers
 import AccountsController from './routes/accounts/accounts.controller.js';
 import AccountsService from './routes/accounts/accounts.service.js';
 import type BaseWalletManager from './services/wallet/base_manager.js';
